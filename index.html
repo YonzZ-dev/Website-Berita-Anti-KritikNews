@@ -398,4 +398,829 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
       <div class="admin-list" id="adminList"></div>
 
       <h3 style="margin:24px 0 8px">🚫 Blokir Pengguna</h3>
-     
+			    <input id="blockUsername" placeholder="Username yang ingin diblokir (4-12 karakter)" maxlength="12">
+      <select id="blockDuration">
+        <option value="1">1 hari</option>
+        <option value="10">10 hari</option>
+        <option value="100">100 hari</option>
+        <option value="permanent">Permanen</option>
+      </select>
+      <button class="btn del" id="blockUserBtn">🚫 Blokir Pengguna</button>
+      <div class="admin-list" id="blockList" style="margin-top:10px"></div>
+
+      <h3 style="margin:24px 0 8px">🚨 Permintaan Akses Admin</h3>
+      <div class="small">Pesan ini tersimpan sampai admin menghapusnya. Admin dapat memblokir username dari sini.</div>
+      <div class="admin-list" id="accessAlertList" style="margin-top:10px"></div>
+
+      <p class="small danger-note" style="margin-top:10px">
+        Admin utama dapat mencabut status admin kedua. Data role pada file HTML ini adalah sistem demo lokal.
+      </p>
+    </div>
+
+    <div class="row" style="margin-top:18px">
+      <button class="btn secondary" id="logoutBtn">🔒 Keluar Admin</button>
+    </div>
+  </section>
+
+  <h2 class="section-title reveal" data-reveal="left">🔥 Berita Terbaru</h2>
+  <section class="news-grid" id="newsContainer"></section>
+
+  <section class="comment-section reveal" id="comments">
+    <h2 class="section-title" style="margin-top:0">💬 Komentar Pembaca</h2>
+    <div class="comment-box">
+      <input id="commentUsername" maxlength="12" placeholder="Username (4-12 karakter)">
+      <button class="btn primary" id="applyUsernameBtn" type="button">👤 Terapkan Username!</button>
+      <textarea id="commentText" maxlength="500" placeholder="Tulis komentar dengan bahasa yang baik..." disabled></textarea>
+      <div class="row">
+        <button class="btn primary" id="commentBtn" disabled>💬 Kirim Komentar</button>
+      </div>
+      <p class="small" style="margin-top:10px">
+        Username 4-12 karakter. Simbol keyboard diperbolehkan. Kata vulgar/kasar/18+ akan ditolak atau disamarkan.
+        Komentar harus sopan.
+      </p>
+    </div>
+    <div class="comment-list" id="commentList"></div>
+  </section>
+</main>
+
+<footer>
+  <strong>© 2026 Website Berita Anti Kritik By YonzZ</strong>
+  Dibuat untuk membaca berita tanpa ribut di kolom komentar.
+</footer>
+
+<button id="scrollTop" aria-label="Kembali ke atas">↑</button>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+const MAIN_DEFAULT_PASSWORD="banyuwangi";
+const NEWS_KEY="antiKritikNews_v3";
+const COMMENT_KEY="antiKritikComments_v3";
+const ADMIN_KEY="antiKritikAdmins_v3";
+const PASS_KEY="antiKritikMainPassword_v3";
+const THEME_KEY="antiKritikTheme_v3";
+const AGE_KEY="antiKritikAgeGate_v3";
+const USERNAME_KEY="antiKritikUsername_v4";
+const USERNAME_LOCK_KEY="antiKritikUsernameLock_v4";
+const BLOCK_KEY="antiKritikBlocks_v1";
+const ACCESS_ALERT_KEY="antiKritikAdminAccessAlerts_v1";
+
+let editingIndex=-1;
+let sessionRole=null;
+let sessionUsername=null;
+
+const fallbackImage="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500"><rect width="100%" height="100%" fill="#172033"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#ffda4a" font-size="42" font-family="Arial" font-weight="bold">BERITA ANTI KRITIK</text></svg>'
+);
+
+const defaultNews=[
+{title:"Kucing Lokal Mendadak Jadi Selebritas",category:"Lucu",image:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=kucing",description:"Seekor kucing berhasil menarik perhatian warga setelah santai duduk di atas motor.",date:new Date().toISOString()},
+{title:"Internet Kembali Ramai Membahas Hal Random",category:"Trending",image:"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+internet",description:"Topik sederhana mendadak menjadi pembicaraan ramai di internet.",date:new Date().toISOString()},
+{title:"Langit Sore Membuat Warga Berhenti Sejenak",category:"Menarik",image:"https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=langit+sore",description:"Pemandangan langit sore membuat sejumlah warga berhenti untuk mengambil foto.",date:new Date().toISOString()},
+{title:"Anak Sekolah Menemukan Cara Baru Melawan Ngantuk",category:"Berita",image:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=sekolah",description:"Cara sederhana ini menjadi bahan pembicaraan karena cukup menarik perhatian.",date:new Date().toISOString()},
+{title:"Topik Baru Mendadak Masuk Daftar Trending",category:"Trending",image:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+media+sosial",description:"Percakapan di media sosial berubah cepat dan membuat topik ini ikut ramai.",date:new Date().toISOString()},
+{title:"Warga Menemukan Momen Unik di Jalan",category:"Menarik",image:"https://images.unsplash.com/photo-1494522358652-f30e61a60313?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=berita+unik",description:"Momen tidak biasa ini berhasil diabadikan dan dibagikan oleh warga.",date:new Date().toISOString()}
+];
+
+const $=id=>document.getElementById(id);
+
+function getLockedUsername(){
+  return localStorage.getItem(USERNAME_KEY)||"";
+}
+function usernameIsLocked(){
+  return localStorage.getItem(USERNAME_LOCK_KEY)==="1" && !!getLockedUsername();
+}
+function validUsername(u){
+  return u.length>=4 && u.length<=12 && validWord(u);
+}
+function applyUsername(){
+  const input=$("commentUsername");
+  if(!input)return;
+  if(usernameIsLocked()){
+    input.value=getLockedUsername();
+    lockUsernameUI();
+    toast("🔒 Username sudah terkunci. Tidak bisa diganti.");
+    return;
+  }
+  const u=input.value.trim();
+  if(!validUsername(u)){
+    toast("⚠️ Username harus 4-12 karakter dan tidak boleh mengandung kata kasar/vulgar.");
+    return;
+  }
+  localStorage.setItem(USERNAME_KEY,u);
+  localStorage.setItem(USERNAME_LOCK_KEY,"1");
+  lockUsernameUI();
+  toast("✅ Username diterapkan. Sekarang kamu bisa berkomentar.");
+}
+function lockUsernameUI(){
+  const input=$("commentUsername"), text=$("commentText"), send=$("commentBtn"), apply=$("applyUsernameBtn");
+  const locked=usernameIsLocked();
+  if(locked){
+    input.value=getLockedUsername();
+    input.readOnly=true;
+    input.classList.add("username-locked");
+    text.disabled=false;
+    send.disabled=false;
+    apply.textContent="🔒 Username Sudah Diterapkan";
+    apply.disabled=true;
+    if(!document.querySelector(".username-note")){
+      const note=document.createElement("small");
+      note.className="username-note";
+      note.textContent="Username ini sudah dikunci pada browser ini dan tidak dapat diganti lewat fitur website.";
+      apply.insertAdjacentElement("afterend",note);
+    }
+  }else{
+    text.disabled=true;
+    send.disabled=true;
+  }
+}
+function loadJSON(key,fallback){
+  try{const x=JSON.parse(localStorage.getItem(key));return x===null?fallback:x}catch(e){return fallback}
+}
+let news=loadJSON(NEWS_KEY,defaultNews);
+if(!Array.isArray(news)||!news.length)news=defaultNews;
+let comments=loadJSON(COMMENT_KEY,[]);
+if(!Array.isArray(comments))comments=[];
+let admins=loadJSON(ADMIN_KEY,[]);
+if(!Array.isArray(admins))admins=[];
+let blocks=loadJSON(BLOCK_KEY,[]);
+if(!Array.isArray(blocks))blocks=[];
+let accessAlerts=loadJSON(ACCESS_ALERT_KEY,[]);
+if(!Array.isArray(accessAlerts))accessAlerts=[];
+let mainPassword=localStorage.getItem(PASS_KEY)||MAIN_DEFAULT_PASSWORD;
+
+function persist(){
+  localStorage.setItem(NEWS_KEY,JSON.stringify(news));
+  localStorage.setItem(COMMENT_KEY,JSON.stringify(comments));
+  localStorage.setItem(ADMIN_KEY,JSON.stringify(admins));
+  localStorage.setItem(BLOCK_KEY,JSON.stringify(blocks));
+  localStorage.setItem(ACCESS_ALERT_KEY,JSON.stringify(accessAlerts));
+  localStorage.setItem(PASS_KEY,mainPassword);
+}
+function esc(v){
+  return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+function safeURL(v){
+  try{const u=new URL(String(v||""));return u.protocol==="https:"?u.href:""}catch(e){return""}
+}
+function toast(msg){
+  $("toast").textContent=msg;$("toast").classList.add("show");
+  clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").classList.remove("show"),2400);
+}
+function ageYears(dateString){
+  const d=new Date(dateString+"T00:00:00"),now=new Date();
+  if(Number.isNaN(d.getTime()))return -1;
+  let age=now.getFullYear()-d.getFullYear();
+  const m=now.getMonth()-d.getMonth();
+  if(m<0||(m===0&&now.getDate()<d.getDate()))age--;
+  return age;
+}
+function setupBirthPicker(){
+  const day=$("birthDay"),month=$("birthMonth"),year=$("birthYear");
+  if(!day||!month||!year)return;
+
+  day.innerHTML=Array.from({length:31},(_,i)=>`<option value="${String(i+1).padStart(2,"0")}">${i+1}</option>`).join("");
+
+  const months=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  month.innerHTML=months.map((name,i)=>`<option value="${String(i+1).padStart(2,"0")}">${name}</option>`).join("");
+
+  const current=new Date().getFullYear();
+  year.innerHTML=Array.from({length:current-1900+1},(_,i)=>{
+    const y=current-i;
+    return `<option value="${y}">${y}</option>`;
+  }).join("");
+
+  day.value="01";month.value="01";year.value=String(current-18);
+}
+
+function getBirthDateFromPicker(){
+  const d=$("birthDay").value,m=$("birthMonth").value,y=$("birthYear").value;
+  if(!d||!m||!y)return "";
+  const day=Number(d),month=Number(m),year=Number(y);
+  const test=new Date(year,month-1,day);
+  if(test.getFullYear()!==year||test.getMonth()!==month-1||test.getDate()!==day)return "";
+  return `${y}-${m}-${d}`;
+}
+
+function ageGate(){
+  setupBirthPicker();
+  const verified=localStorage.getItem(AGE_KEY)==="verified";
+  if(verified){$("ageGate").style.display="none";return}
+  $("enterSite").onclick=()=>{
+    const date=getBirthDateFromPicker();
+    if(!$("ageConfirm").checked){toast("⚠️ Centang konfirmasi terlebih dahulu");return}
+    const age=ageYears(date);
+    if(age<0){toast("⚠️ Pilih tanggal lahir yang valid");return}
+    if(age<18){
+      $("ageGate").style.display="none";$("blocked").classList.add("show");return
+    }
+    localStorage.setItem(AGE_KEY,"verified");$("ageGate").style.display="none";toast("✅ Pemeriksaan usia selesai");
+  };
+  $("leaveSite").onclick=()=>{$("ageGate").style.display="none";$("blocked").classList.add("show")};
+}
+function renderTrending(){
+  const titles=news.slice(0,8).map(n=>n.title);
+  $("trending").innerHTML=titles.map(t=>`<div class="trend-chip">🔥 ${esc(t)}</div>`).join("");
+}
+function renderNews(){
+  const box=$("newsContainer");
+  if(!news.length){box.innerHTML='<div class="empty">Belum ada berita.</div>';return}
+  box.innerHTML=news.map((item,index)=>{
+    const cls=item.category==="Trending"?"badge hot":item.category==="Lucu"?"badge lucu":"badge";
+    const date=item.date?new Date(item.date).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"}):"Hari ini";
+    const link=safeURL(item.url);
+    const href=link?`href="${esc(link)}" target="_blank" rel="noopener noreferrer"`:`href="#" onclick="return false;"`;
+    return `<article class="card reveal" data-reveal="${index%2?"right":"left"}">
+      <a class="image-link" ${href} aria-label="Buka berita ${esc(item.title)}">
+        <img src="${esc(item.image||fallbackImage)}" alt="${esc(item.title)}" loading="lazy" referrerpolicy="no-referrer"
+        onerror="this.onerror=null;this.src='${fallbackImage}'">
+      </a>
+      <div class="card-body">
+        <span class="${cls}">${esc(item.category)}</span>
+        <h3>${esc(item.title)}</h3><p>${esc(item.description)}</p>
+        <div class="date">🕒 ${date}</div>
+        ${sessionRole?`<div class="admin-actions">
+          <button class="btn edit" data-edit="${index}">✏️ Edit</button>
+          ${sessionRole==="main"?`<button class="btn del" data-delete="${index}">🗑️ Hapus</button>`:""}
+        </div>`:""}
+      </div></article>`;
+  }).join("");
+  setupReveal();
+}
+
+function cleanupBlocks(){
+  const now=Date.now();
+  blocks=blocks.filter(b=>b.permanent || Number(b.until)>now);
+  persist();
+}
+function findBlock(username){
+  cleanupBlocks();
+  const u=String(username||"").toLowerCase();
+  return blocks.find(b=>String(b.username).toLowerCase()===u) || null;
+}
+function blockLabel(b){
+  if(b.permanent) return "Permanen";
+  const days=Math.max(0,Math.ceil((Number(b.until)-Date.now())/86400000));
+  return days+" hari lagi";
+}
+function renderBlocks(){
+  const list=$("blockList");
+  if(!list)return;
+  cleanupBlocks();
+  if(!blocks.length){
+    list.innerHTML='<div class="small">Belum ada pengguna yang diblokir.</div>';
+    return;
+  }
+  list.innerHTML=blocks.map((b,i)=>`
+    <div class="admin-item">
+      <div>
+        <div class="admin-name">🚫 ${esc(b.username)}</div>
+        <div class="admin-role">${b.permanent?"Permanen":"Blokir: "+blockLabel(b)}</div>
+      </div>
+      <button class="btn secondary" data-unblock="${i}">Buka Blokir</button>
+    </div>
+  `).join("");
+}
+function blockUser(){
+  if(sessionRole!=="main"){toast("👑 Hanya Admin Utama yang dapat memblokir pengguna.");return}
+  const username=$("blockUsername").value.trim();
+  const duration=$("blockDuration").value;
+  if(username.length<4||username.length>12){toast("⚠️ Username harus 4-12 karakter.");return}
+  if(containsProfanity(username)){toast("⚠️ Username tersebut mengandung kata yang dilarang.");return}
+  const existing=findBlock(username);
+  if(existing){toast("⚠️ Pengguna tersebut sudah diblokir.");return}
+  const permanent=duration==="permanent";
+  blocks.push({
+    username,
+    permanent,
+    until: permanent ? null : Date.now()+Number(duration)*86400000,
+    createdAt:Date.now()
+  });
+  persist();
+  $("blockUsername").value="";
+  renderBlocks();
+  toast(permanent?"🚫 Pengguna diblokir permanen":"🚫 Pengguna diblokir selama "+duration+" hari");
+}
+function unblockUser(index){
+  if(sessionRole!=="main")return;
+  const b=blocks[index];
+  if(!b)return;
+  if(confirm("Buka blokir untuk "+b.username+"?")){
+    blocks.splice(index,1);
+    persist();
+    renderBlocks();
+    toast("✅ Blokir dicabut");
+  }
+}
+function renderComments(){
+  const box=$("commentList");
+  if(!comments.length){box.innerHTML='<div class="empty">Belum ada komentar. Jadilah pembaca pertama yang berkomentar dengan sopan.</div>';return}
+  box.innerHTML=comments.slice().reverse().map((c,reverseIndex)=>{
+    const originalIndex=comments.length-1-reverseIndex;
+    const admin=c.role==="main"||c.role==="secondary";
+    return `<article class="comment reveal">
+      <div class="comment-head"><span class="comment-user">${esc(c.username)}</span>
+      ${admin?'<span class="admin-label">★ ADMIN</span>':""}
+      <span class="comment-time">${esc(new Date(c.date).toLocaleString("id-ID"))}</span></div>
+      <p class="comment-text">${esc(c.text)}</p>
+      ${(sessionRole==="main"||sessionUsername===c.username)?`<div class="comment-tools"><button data-comment-delete="${originalIndex}">Hapus komentar</button></div>`:""}
+    </article>`;
+  }).join("");
+  setupReveal();
+}
+function getAccessRequester(){
+  const commentUser = $("commentUsername")?.value?.trim();
+  if(commentUser && commentUser.length>=4) return commentUser;
+  return "Pengguna/Tamu";
+}
+
+function createAccessAlert(roleAttempt){
+  const username=getAccessRequester();
+  accessAlerts.unshift({
+    id:(crypto.randomUUID ? crypto.randomUUID() : "alert-"+Date.now()+"-"+Math.random().toString(36).slice(2)),
+    username:username,
+    role:roleAttempt==="main" ? "Admin Utama" : "Admin Kedua",
+    time:new Date().toISOString()
+  });
+  persist();
+  renderAccessAlerts();
+}
+
+function renderAccessAlerts(){
+  const box=$("accessAlertList");
+  if(!box)return;
+  if(!accessAlerts.length){
+    box.innerHTML='<div class="small">Belum ada permintaan akses admin.</div>';
+    return;
+  }
+  box.innerHTML=accessAlerts.map((a,i)=>`
+    <div class="access-alert">
+      <div class="access-alert-title">🚨 Ada seseorang yang ingin mencoba memasuki akses ADMIN!</div>
+      <div class="access-alert-user">👤 Username: ${esc(a.username)}</div>
+      <div class="small">Target: ${esc(a.role)}</div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn del" data-alert-kick="${i}">🚫 Kick / Pental</button>
+        <button class="btn secondary" data-alert-delete="${i}">🗑️ Hapus Pesan</button>
+      </div>
+      <div class="access-alert-time">${new Date(a.time).toLocaleString("id-ID")}</div>
+    </div>
+  `).join("");
+}
+
+function deleteAccessAlert(index){
+  accessAlerts.splice(index,1);
+  persist();
+  renderAccessAlerts();
+  toast("🗑️ Pesan akses dihapus");
+}
+
+function kickAccessRequester(index){
+  const a=accessAlerts[index];
+  if(!a)return;
+  const username=String(a.username||"").trim();
+  if(username && username!=="Pengguna/Tamu"){
+    blocks.push({
+      username:username,
+      type:"permanent",
+      until:null,
+      created:new Date().toISOString()
+    });
+    persist();
+  }
+  accessAlerts.splice(index,1);
+  persist();
+  renderAccessAlerts();
+  toast("🚫 Pengguna dipental dan diblokir permanen");
+}
+
+function renderAdmins(){
+  const list=$("adminList");
+  list.innerHTML=`<div class="admin-item"><div><div class="admin-name">👑 Admin Utama</div><div class="admin-role">Pemilik utama website</div></div></div>`+
+    (admins.length?admins.map((a,i)=>`<div class="admin-item"><div><div class="admin-name">🛡️ ${esc(a.username)}</div><div class="admin-role">Admin Kedua</div></div>
+    <button class="btn del" data-revoke="${i}">Lepas Admin</button></div>`).join(""):'<div class="small">Belum ada admin kedua.</div>');
+}
+function updateAdminPanel(){
+  const panel=$("adminPanel");
+  if(!sessionRole){panel.classList.remove("show");return}
+  panel.classList.add("show");
+  $("adminRoleText").textContent=sessionRole==="main"?"Login sebagai ADMIN UTAMA 👑":"Login sebagai ADMIN KEDUA 🛡️";
+  $("mainAdminBox").style.display=sessionRole==="main"?"block":"none";
+  renderAdmins();
+  renderBlocks();
+  renderAccessAlerts();
+}
+function setUsernameOnce(value){
+    const username = String(value || "").trim();
+
+    if(isUsernameLocked()){
+      return {
+        ok:false,
+        message:"Username sudah dikunci dan tidak dapat diganti."
+      };
+    }
+
+    if(username.length < 4 || username.length > 12){
+      return {
+        ok:false,
+        message:"Username harus 4-12 karakter."
+      };
+    }
+
+    if(!saveUsernameOnce(username)){
+      return {
+        ok:false,
+        message:"Username sudah dikunci dan tidak dapat diganti."
+      };
+    }
+
+    setupPasswordToggles();
+
+  enforceUsernameOnce();
+
+    return {
+      ok:true,
+      message:"Username berhasil ditetapkan dan dikunci."
+    };
+  }
+
+  function clearForm(){
+  $("title").value="";$("category").value="Berita";$("image").value="";$("url").value="";$("description").value="";
+  editingIndex=-1;$("saveBtn").textContent="➕ Tambahkan Berita";
+}
+function saveNews(){
+  if(!sessionRole){toast("🔒 Login admin dulu");return}
+  const title=$("title").value.trim(),category=$("category").value,image=$("image").value.trim(),url=$("url").value.trim(),description=$("description").value.trim();
+  if(!title||!description){toast("⚠️ Judul dan isi wajib diisi");return}
+  const imageURL=safeURL(image),targetURL=safeURL(url);
+  if(image&& !imageURL){toast("⚠️ URL gambar harus HTTPS");return}
+  if(url&& !targetURL){toast("⚠️ URL tujuan harus HTTPS");return}
+  const item={title,category,image:imageURL||fallbackImage,url:targetURL,description,date:new Date().toISOString()};
+  if(sessionRole==="secondary" && editingIndex!==-1){toast("🛡️ Admin kedua hanya dapat menambahkan berita");return}
+  if(editingIndex===-1){news.unshift(item);toast("📰Berita ditambahkan")}
+	else{news[editingIndex]=item;toast("✏️ Berita diperbarui")}
+  persist();clearForm();renderNews();renderTrending();
+}
+function editNews(i){
+  if(sessionRole!=="main"){toast("🛡️ Admin kedua tidak dapat mengedit");return}
+  const n=news[i];$("title").value=n.title;$("category").value=n.category;$("image").value=n.image;$("url").value=n.url||"";$("description").value=n.description;
+  editingIndex=i;$("saveBtn").textContent="💾 Simpan Perubahan";$("adminPanel").scrollIntoView({behavior:"smooth"});
+}
+function deleteNews(i){
+  if(sessionRole!=="main"){toast("🛡️ Hanya admin utama yang dapat menghapus");return}
+  if(confirm("Hapus berita ini?")){news.splice(i,1);persist();renderNews();renderTrending();toast("🗑️ Berita dihapus")}
+}
+let loginRole="main";
+function openAdminLogin(){
+  loginRole="main";
+  $("adminLoginModal").classList.add("show");
+  $("adminLoginModal").setAttribute("aria-hidden","false");
+  $("mainRoleBtn").classList.add("active");
+  $("secondaryRoleBtn").classList.remove("active");
+  $("secondaryUserField").style.display="none";
+  $("loginAdminUser").value="";
+  $("loginAdminPassword").value="";
+  $("adminLoginError").textContent="";
+  setTimeout(()=>$("loginAdminPassword").focus(),60);
+}
+function closeAdminLogin(){
+  $("adminLoginModal").classList.remove("show");
+  $("adminLoginModal").setAttribute("aria-hidden","true");
+}
+function login(){openAdminLogin()}
+function performAdminLogin(){
+  const pass=$("loginAdminPassword").value;
+  const error=$("adminLoginError");
+  error.textContent="";
+  if(loginRole==="main"){
+    if(pass===mainPassword){
+      sessionRole="main";sessionUsername="Admin Utama";closeAdminLogin();updateAdminPanel();renderNews();renderComments();$("menu").classList.remove("open");toast("👑 Admin Utama aktif");
+    }else{
+      createAccessAlert("main");
+      error.textContent="❌ Password Admin Utama salah.";
+      $("loginAdminPassword").select();
+    }
+    return;
+  }
+  const user=$("loginAdminUser").value.trim();
+  if(!user){error.textContent="⚠️ Masukkan username Admin Kedua.";$("loginAdminUser").focus();return}
+  const found=admins.find(a=>String(a.username).toLowerCase()===user.toLowerCase());
+  if(!found){
+    createAccessAlert("secondary");
+    error.textContent="❌ Admin Kedua tidak ditemukan. Admin Utama harus menambahkannya terlebih dahulu.";
+    return
+  }
+  if(pass===found.password){
+    sessionRole="secondary";sessionUsername=found.username;closeAdminLogin();updateAdminPanel();renderNews();renderComments();$("menu").classList.remove("open");toast("🛡️ Admin Kedua aktif");
+  }else{
+    createAccessAlert("secondary");
+    error.textContent="❌ Password Admin Kedua salah.";
+    $("loginAdminPassword").select();
+  }
+}
+function logout(){sessionRole=null;sessionUsername=null;editingIndex=-1;clearForm();updateAdminPanel();renderNews();renderComments();toast("🔒 Keluar admin")}
+function normalizeBadWordInput(value){
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g,"")
+    // common leetspeak / number substitutions
+    .replace(/0/g,"o")
+    .replace(/[1|!]/g,"i")
+    .replace(/[2]/g,"z")
+    .replace(/[3]/g,"e")
+    .replace(/[4@]/g,"a")
+    .replace(/[5$]/g,"s")
+    .replace(/[7]/g,"t")
+    .replace(/[8]/g,"b")
+    // remove spaces, punctuation and separators used to evade filters
+    .replace(/[^a-z0-9]+/g,"");
+}
+
+const PROFANITY_WORDS = [
+  "kontol","memek","meki","ngentot","ngewe","jembut","pepek","peler","titit","lonte",
+  "bego","tolol","goblok","idiot","anjing","bangsat","kampret","bajingan","sialan","asu","tai",
+  "fuck","fucking","shit","bitch","dick","pussy","cunt","asshole","bastard","motherfucker",
+  "slut","whore","nigga","nigger","puta","puto","mierda","concha","carajo","scheisse",
+  "arschloch","kurwa","blyat"
+];
+
+// Singkatan yang umum dipakai untuk mencoba melewati filter.
+// Sengaja dibuat eksplisit agar kata normal seperti "bg" tidak ikut terblokir.
+const PROFANITY_SHORT_FORMS = [
+  "kntl","kntol","knt1","k0nt0l","m3mek","mmk","mek","ngntt","ngntot","ngewe",
+  "niga","n1ga","n!ga","nig4","n1g4","ni9a","n19a","n1g@","nig@","ni1a",
+  "jmbt","jmbut","ppk","plr","t1tit","titi","l0nte","bgo","tll","gblk",
+  "anjg","anj","bngst","bngsat","kmpr3t","kmprt","bjngn","s1alan","sialn","asu","tai",
+  "fck","fuk","fckn","sht","btch","dck","pssy","cnt","sh1t","bstrd","slut","whre",
+  "n1gga","n1gger","ngr","ptr","mierd","crjo","sch3isse","arschl0ch","krw","blyt"
+];
+
+function compactBadText(value){
+  return normalizeBadWordInput(value);
+}
+
+function collapsedBadText(value){
+  // Collapse repeated letters: e.g. "konnntooool" -> "kontol"-like form.
+  return compactBadText(value).replace(/(.)\1{1,}/g,"$1");
+}
+
+function consonantSkeleton(word){
+  return word.replace(/[aeiou]/g,"");
+}
+
+const PROFANITY_PATTERNS = (() => {
+  const set = new Set(PROFANITY_SHORT_FORMS.map(compactBadText));
+  for(const word of PROFANITY_WORDS){
+    const w = compactBadText(word);
+    set.add(w);
+    // Only use consonant skeletons for longer words to avoid false positives
+    // such as "bg" matching ordinary Indonesian words.
+    if(w.length >= 5) set.add(consonantSkeleton(w));
+  }
+  return [...set].sort((a,b)=>b.length-a.length);
+})();
+
+function containsProfanity(value){
+  const compact = compactBadText(value);
+  const collapsed = collapsedBadText(value);
+
+  // Direct and obfuscated matches.
+  if(PROFANITY_PATTERNS.some(pat => pat && (compact.includes(pat) || collapsed.includes(pat)))){
+    return true;
+  }
+
+  // Check the original word stream as well, so "k o n t o l" and similar
+  // constructions remain blocked.
+  const pieces = String(value || "").toLowerCase().split(/\s+/).filter(Boolean);
+  for(const piece of pieces){
+    const c = compactBadText(piece);
+    const cl = collapsedBadText(piece);
+    if(PROFANITY_PATTERNS.some(pat => pat && (c.includes(pat) || cl.includes(pat)))){
+      return true;
+    }
+  }
+  return false;
+}
+
+function validWord(s){
+  return !containsProfanity(s);
+}
+
+function maskBad(s){
+  let out = String(s || "");
+
+  // Mask full words first.
+  [...PROFANITY_WORDS, ...PROFANITY_SHORT_FORMS]
+    .sort((a,b)=>b.length-a.length)
+    .forEach(word=>{
+      const escaped = word.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");
+      const re = new RegExp(escaped,"gi");
+      out = out.replace(re, "*".repeat(word.length));
+    });
+
+  // Also mask obfuscated forms by scanning non-alphanumeric separators.
+  // This keeps the visible length roughly intact instead of exposing the word.
+  const original = out;
+  const normalized = normalizeBadWordInput(original);
+  if(containsProfanity(original) && normalized.length){
+    // If the text is a short standalone evasion, replace the suspicious
+    // alphanumeric run rather than letting it pass through unchanged.
+    out = out.replace(/[A-Za-z0-9]+/g, token=>{
+      return containsProfanity(token) ? "*".repeat(token.length) : token;
+    });
+  }
+  return out;
+}
+
+function submitComment(){
+  const username=getLockedUsername();
+  const text=$("commentText").value.trim();
+
+  if(!usernameIsLocked()){
+    toast("👤 Terapkan username terlebih dahulu.");
+    return;
+  }
+  if(!validUsername(username)){
+    toast("⚠️ Username tersimpan tidak valid.");
+    return;
+  }
+  const userBlock=findBlock(username);
+  if(userBlock){
+    toast(userBlock.permanent
+      ?"🚫 Username ini diblokir secara permanen."
+      :"🚫 Username ini sedang diblokir. Sisa: "+blockLabel(userBlock));
+    return;
+  }
+  if(!text||text.length>500){
+    toast("⚠️ Komentar harus 1-500 karakter");
+    return;
+  }
+  if(!validWord(text)){
+    toast("⚠️ Komentar mengandung kata kasar/vulgar");
+    return;
+  }
+
+  comments.push({
+    username,
+    text:maskBad(text),
+    date:new Date().toISOString(),
+    role:sessionRole||"member"
+  });
+  persist();
+  $("commentText").value="";
+  renderComments();
+  toast("💬 Komentar berhasil dikirim");
+}
+function setupReveal(){
+  const els=document.querySelectorAll(".reveal:not(.visible)");
+  if(!("IntersectionObserver" in window)){els.forEach(e=>e.classList.add("visible"));return}
+  if(!window.revealObserver){
+    window.revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add("visible");window.revealObserver.unobserve(e.target)}})
+    },{threshold:.12});
+  }
+  els.forEach(e=>window.revealObserver.observe(e));
+}
+function theme(mode){
+  document.body.classList.toggle("dark",mode==="dark");localStorage.setItem(THEME_KEY,mode);$("menu").classList.remove("open");toast(mode==="dark"?"🌙 Mode gelap aktif":"☀️ Mode terang aktif");
+}
+function initTheme(){document.body.classList.toggle("dark",localStorage.getItem(THEME_KEY)==="dark")}
+
+/* Events */
+$("menuBtn").onclick=e=>{e.stopPropagation();$("menu").classList.toggle("open")};
+document.addEventListener("click",e=>{if(!e.target.closest(".menu-wrap"))$("menu").classList.remove("open")});
+$("adminBtn").onclick=login;
+$("adminLoginCancel").onclick=closeAdminLogin;
+$("mainRoleBtn").onclick=()=>{
+  loginRole="main";$("mainRoleBtn").classList.add("active");$("secondaryRoleBtn").classList.remove("active");$("secondaryUserField").style.display="none";$("adminLoginError").textContent="";setTimeout(()=>$("loginAdminPassword").focus(),30);
+};
+$("secondaryRoleBtn").onclick=()=>{
+  loginRole="secondary";$("secondaryRoleBtn").classList.add("active");$("mainRoleBtn").classList.remove("active");$("secondaryUserField").style.display="block";$("adminLoginError").textContent="";setTimeout(()=>$("loginAdminUser").focus(),30);
+};
+$("adminLoginSubmit").onclick=performAdminLogin;
+["loginAdminUser","loginAdminPassword"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();performAdminLogin()}}));
+$("adminLoginModal").addEventListener("click",e=>{if(e.target===$("adminLoginModal"))closeAdminLogin()});
+$("adminBtn").onclick=login;$("lightBtn").onclick=()=>theme("light");$("darkBtn").onclick=()=>theme("dark");
+$("refreshBtn").onclick=()=>{renderNews();renderTrending();$("menu").classList.remove("open");toast("🔄 Tampilan berita diperbarui")};
+$("saveBtn").onclick=saveNews;$("cancelEditBtn").onclick=clearForm;$("logoutBtn").onclick=logout;
+$("blockUserBtn").onclick=blockUser;
+$("blockList").onclick=e=>{
+  const btn=e.target.closest("[data-unblock]");
+  if(btn)unblockUser(Number(btn.dataset.unblock));
+};
+
+// Tombol "Kick / Pental" dan "Hapus Pesan" sama-sama menghapus
+// pesan akses tersebut. Tidak ada aksi tambahan yang tersembunyi.
+$("accessAlertList").onclick=e=>{
+  const kick=e.target.closest("[data-alert-kick]");
+  const del=e.target.closest("[data-alert-delete]");
+
+  if(kick){
+    const index=Number(kick.dataset.alertKick);
+    if(Number.isInteger(index) && accessAlerts[index]){
+      accessAlerts.splice(index,1);
+      persist();
+      renderAccessAlerts();
+      toast("🚫 Pesan akses dihapus");
+    }
+    return;
+  }
+
+  if(del){
+    const index=Number(del.dataset.alertDelete);
+    if(Number.isInteger(index) && accessAlerts[index]){
+      accessAlerts.splice(index,1);
+      persist();
+      renderAccessAlerts();
+      toast("🗑️ Pesan akses dihapus");
+    }
+  }
+};
+$("newsContainer").onclick=e=>{
+  const ed=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");
+  if(ed)editNews(Number(ed.dataset.edit));if(del)deleteNews(Number(del.dataset.delete));
+};
+$("applyUsernameBtn").onclick=applyUsername;
+$("commentBtn").onclick=submitComment;
+$("commentList").onclick=e=>{const b=e.target.closest("[data-comment-delete]");if(b){const i=Number(b.dataset.commentDelete);comments.splice(i,1);persist();renderComments();toast("🗑️ Komentar dihapus")}};
+$("changePasswordBtn").onclick=()=>{
+  if(sessionRole!=="main")return;
+  const p=$("newMainPassword").value.trim();
+  if(p.length<6){toast("⚠️ Password minimal 6 karakter");return}
+  mainPassword=p;persist();$("newMainPassword").value="";toast("🔑 Password Admin Utama berubah")
+};
+$("addAdminBtn").onclick=()=>{
+  if(sessionRole!=="main")return;
+  const u=$("newAdminUser").value.trim(),p=$("newAdminPassword").value;
+  if(u.length<4||u.length>12||!validWord(u)){toast("⚠️ Username admin tidak valid");return}
+  if(p.length<6){toast("⚠️ Password admin minimal 6 karakter");return}
+  if(admins.some(a=>a.username.toLowerCase()===u.toLowerCase())){toast("⚠️ Username sudah dipakai");return}
+  admins.push({username:u,password:p});persist();renderAdmins();$("newAdminUser").value="";$("newAdminPassword").value="";toast("🛡️ Admin kedua ditambahkan")
+};
+$("adminList").onclick=e=>{
+  const b=e.target.closest("[data-revoke]");
+  if(!b||sessionRole!=="main")return;
+  const i=Number(b.dataset.revoke);
+  if(confirm("Lepaskan status admin kedua ini?")){admins.splice(i,1);persist();renderAdmins();toast("🛡️ Status admin dicabut")}
+};
+window.addEventListener("scroll",()=>{
+  $("scrollTop").classList.toggle("show",scrollY>450);
+});
+$("scrollTop").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+
+/* Desktop: Shift + wheel scrolls the horizontal trending strip. */
+const trend=$("trending");
+trend.addEventListener("wheel",e=>{
+  if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();trend.scrollLeft+=e.deltaY}
+},{passive:false});
+
+initTheme();persist();renderTrending();renderNews();renderComments();setupReveal();ageGate();lockUsernameUI();
+
+})();
+</script>
+
+<script id="password-eye-script">
+(function(){
+  function addPasswordEyes(){
+    document.querySelectorAll('input[type="password"]').forEach(function(input){
+      if(input.dataset.eyeReady === "1") return;
+
+      const wrap = document.createElement("span");
+      wrap.className = "password-wrap";
+      input.parentNode.insertBefore(wrap, input);
+      wrap.appendChild(input);
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "password-toggle";
+      btn.setAttribute("aria-label","Tampilkan password");
+      btn.setAttribute("title","Tampilkan password");
+      btn.textContent = "👁️";
+
+      btn.addEventListener("click", function(){
+        const visible = input.type === "text";
+        input.type = visible ? "password" : "text";
+        btn.textContent = visible ? "👁️" : "🙈";
+        btn.setAttribute("aria-label", visible ? "Tampilkan password" : "Sembunyikan password");
+        btn.setAttribute("title", visible ? "Tampilkan password" : "Sembunyikan password");
+      });
+
+      wrap.appendChild(btn);
+      input.dataset.eyeReady = "1";
+    });
+  }
+
+  addPasswordEyes();
+
+  new MutationObserver(addPasswordEyes).observe(document.documentElement,{
+    childList:true,
+    subtree:true
+  });
+})();
+</script>
+
+</body>
+</html>
