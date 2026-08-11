@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>Website Berita Anti Kritik</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap');
+
+:root{
+  --bg:#eef3ff;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --header:#111827;
+  --border:#e5eaf2;
+  --accent:#ffcc00;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(255,204,0,.25),transparent 24%),
+    radial-gradient(circle at 92% 18%,rgba(80,120,255,.20),transparent 26%),
+    linear-gradient(135deg,#eef3ff,#f8f9fc 45%,#eaf0ff);
+  transition:.3s;
+}
+body.dark{
+  --bg:#080b12;
+  --card:#151c2b;
+  --text:#f1f5f9;
+  --muted:#aab4c5;
+  --border:#283348;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(75,95,160,.18),transparent 24%),
+    radial-gradient(circle at 92% 18%,rgba(80,100,180,.15),transparent 26%),
+    linear-gradient(135deg,#080b12,#0e1421 50%,#111827);
+}
+
+header{
+  position:sticky;top:0;z-index:1000;
+  background:rgba(10,15,28,.94);
+  backdrop-filter:blur(16px);
+  color:#fff;
+  padding:15px 18px;
+  box-shadow:0 8px 30px rgba(0,0,0,.18);
+}
+.header-inner{
+  max-width:1200px;margin:auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-family:Montserrat,Arial,sans-serif;
+  font-weight:900;font-size:20px;
+  display:flex;align-items:center;gap:8px;
+}
+.logo span{
+  background:linear-gradient(90deg,#fff,#ffda4a);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.menu-wrap{position:relative}
+.menu-btn{
+  width:46px;height:46px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:13px;
+  background:rgba(255,255,255,.10);
+  color:white;font-size:27px;line-height:1;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+}
+.menu-btn:active{transform:scale(.95)}
+
+.menu{
+  position:absolute;right:0;top:55px;
+  width:235px;
+  padding:7px;
+  border-radius:15px;
+  background:#fff;color:#18212f;
+  box-shadow:0 16px 45px rgba(0,0,0,.24);
+  border:1px solid #e5e7eb;
+  display:none;
+}
+body.dark .menu{background:#151c2b;color:#f1f5f9;border-color:#283348}
+.menu.open{display:block;animation:pop .15s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.menu button{
+  display:block;width:100%;
+  padding:13px 12px;
+  border:0;border-radius:10px;
+  background:transparent;color:inherit;
+  text-align:left;font:600 14px Inter,Arial;
+  cursor:pointer;
+}
+.menu button:hover{background:#f1f4fa}
+body.dark .menu button:hover{background:#202a3d}
+
+main{max-width:1200px;margin:25px auto;padding:0 18px}
+.hero{
+  position:relative;overflow:hidden;
+  padding:40px 30px;
+  border-radius:24px;
+  color:#fff;
+  background:linear-gradient(135deg,#111827,#18233c 55%,#293b68);
+  box-shadow:0 20px 50px rgba(20,30,60,.25);
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:50%;pointer-events:none;
+}
+.hero:before{
+  width:270px;height:270px;right:-90px;top:-110px;
+  background:rgba(255,204,0,.16);
+}
+.hero:after{
+  width:190px;height:190px;left:-70px;bottom:-100px;
+  background:rgba(70,130,255,.16);
+}
+.hero-content{position:relative;z-index:1}
+.hero h1{
+  font-family:Montserrat,Arial,sans-serif;
+  font-size:clamp(30px,5vw,52px);
+  line-height:1.05;letter-spacing:-2px;
+  margin-bottom:14px;
+}
+.hero h1 span{color:#ffda4a}
+.hero p{max-width:700px;color:#dbe4f5;line-height:1.7;font-size:15px}
+
+.section-title{
+  font:800 25px Montserrat,Arial,sans-serif;
+  margin:32px 0 17px;
+}
+
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:20px;
+}
+.card{
+  overflow:hidden;background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 10px 35px rgba(30,45,80,.10);
+  transition:.25s;
+}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(30,45,80,.16)}
+.image-link{
+  display:block;
+  cursor:pointer;
+  position:relative;
+}
+.image-link::after{
+  content:"🔗";
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  width:34px;height:34px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  background:rgba(17,24,39,.78);
+  color:#fff;
+  font-size:15px;
+  opacity:0;
+  transform:translateY(4px);
+  transition:.2s;
+}
+.card:hover .image-link::after,
+.image-link:focus-visible::after{
+  opacity:1;
+  transform:translateY(0);
+}
+.card img{
+  width:100%;height:205px;object-fit:cover;display:block;
+  background:#dfe5ef;
+}
+.card-body{padding:18px}
+.badge{
+  display:inline-block;padding:6px 10px;border-radius:30px;
+  background:#111827;color:#fff;
+  font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:.4px;margin-bottom:11px;
+}
+.badge.hot{background:#dc2626}
+.badge.lucu{background:#7c3aed}
+.card h3{
+  font:800 19px/1.3 Montserrat,Arial,sans-serif;
+  margin-bottom:9px;
+}
+.card p{font-size:14px;line-height:1.65;color:var(--muted)}
+.card .date{margin-top:13px;color:#98a2b3;font-size:11px}
+
+.admin{
+  display:none;
+  margin-top:25px;padding:22px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 10px 35px rgba(30,45,80,.10);
+}
+.admin.show{display:block}
+.admin h2{font:800 22px Montserrat,Arial,sans-serif;margin-bottom:16px}
+input,textarea,select{
+  width:100%;padding:12px 13px;margin-bottom:11px;
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--card);color:var(--text);
+  font:14px Inter,Arial;outline:none;
+}
+textarea{min-height:110px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:10px;padding:11px 15px;
+  font:700 13px Inter,Arial;cursor:pointer;
+}
+.btn.primary{background:#111827;color:#fff}
+.btn.secondary{background:#e9edf3;color:#263044}
+body.dark .btn.secondary{background:#263044;color:#fff}
+.admin-actions{display:flex;gap:7px;margin-top:13px}
+.edit{background:#2563eb;color:#fff}
+.del{background:#dc2626;color:#fff}
+
+.empty{
+  grid-column:1/-1;
+  padding:40px;text-align:center;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;color:var(--muted);
+}
+
+footer{
+  margin-top:50px;padding:28px 18px;
+  background:#0d1320;color:#aeb8c9;text-align:center;font-size:13px;
+}
+footer strong{color:#fff;display:block;margin-bottom:7px}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;
+  transform:translateX(-50%) translateY(20px);
+  background:#111827;color:#fff;
+  padding:12px 16px;border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  opacity:0;pointer-events:none;transition:.25s;z-index:2000;
+  font-size:13px;font-weight:600;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:900px){
+  .news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  header{padding:13px 15px}
+  .logo{font-size:16px}
+  main{margin-top:20px}
+  .hero{padding:32px 22px;border-radius:20px}
+  .hero h1{font-size:31px;letter-spacing:-1.3px}
+  .news-grid{grid-template-columns:1fr}
+  .card img{height:215px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">📰 <span>Website Berita Anti Kritik</span></div>
+
+    <div class="menu-wrap">
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Buka menu">⋮</button>
+
+      <div class="menu" id="menu">
+        <button type="button" id="adminBtn">🔐 Masuk sebagai Admin</button>
+        <button type="button" id="lightBtn">☀️ Mode Terang</button>
+        <button type="button" id="darkBtn">🌙 Mode Gelap</button>
+        <button type="button" id="refreshBtn">🔄 Refresh Berita</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Website Berita <span>Anti Kritik</span></h1>
+      <p>
+        Berita terbaru, cerita lucu, informasi menarik,
+        dan berbagai hal yang sedang ramai diperbincangkan.
+      </p>
+    </div>
+  </section>
+
+  <section class="admin" id="adminPanel">
+    <h2>⚙️ Panel Admin</h2>
+
+    <input id="title" placeholder="Judul berita">
+    <select id="category">
+      <option value="Berita">Berita</option>
+      <option value="Trending">Trending</option>
+      <option value="Lucu">Lucu</option>
+      <option value="Menarik">Menarik</option>
+    </select>
+    <input id="image" placeholder="URL gambar (https://...)">
+    <input id="url" type="url" placeholder="URL saat gambar diklik (https://...)">
+    <textarea id="description" placeholder="Isi berita..."></textarea>
+
+    <div class="row">
+      <button class="btn primary" id="saveBtn">➕ Tambahkan Berita</button>
+      <button class="btn secondary" id="cancelEditBtn">Batal / Bersihkan</button>
+      <button class="btn secondary" id="logoutBtn">Keluar Admin</button>
+    </div>
+  </section>
+
+  <h2 class="section-title">🔥 Berita Terbaru</h2>
+  <section class="news-grid" id="newsContainer"></section>
+
+</main>
+
+<footer>
+  <strong>© 2026 Website Berita Anti Kritik By YonzZ</strong>
+  Dibuat untuk membaca berita tanpa ribut di kolom komentar.
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+
+  "use strict";
+
+  const PASSWORD = "banyuwangi";
+  const STORAGE_NEWS = "antiKritikNews_v2";
+  const STORAGE_THEME = "antiKritikTheme_v2";
+
+  let editingIndex = -1;
+  let isAdmin = false;
+
+  const fallbackImage =
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="900" height="500">
+        <rect width="100%" height="100%" fill="#172033"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+        fill="#ffda4a" font-size="44" font-family="Arial" font-weight="bold">
+        BERITA ANTI KRITIK
+        </text>
+      </svg>
+    `);
+
+  const defaultNews = [
+    {
+      title:"Kucing Lokal Mendadak Jadi Selebritas",
+      category:"Lucu",
+      image:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=kucing",
+      description:"Seekor kucing berhasil menarik perhatian warga setelah santai duduk di atas motor.",
+      date:new Date().toISOString()
+    },
+    {
+      title:"Internet Kembali Ramai Membahas Hal Random",
+      category:"Trending",
+      image:"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=trending+internet",
+      description:"Topik sederhana mendadak menjadi pembicaraan ramai di internet.",
+      date:new Date().toISOString()
+    },
+    {
+      title:"Langit Sore Membuat Warga Berhenti Sejenak",
+      category:"Menarik",
+      image:"https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=langit+sore",
+      description:"Pemandangan langit sore membuat sejumlah warga berhenti untuk mengambil foto.",
+      date:new Date().toISOString()
+    },
+    {
+      title:"Anak Sekolah Menemukan Cara Baru Melawan Ngantuk",
+      category:"Berita",
+      image:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=sekolah",
+      description:"Cara sederhana ini menjadi bahan pembicaraan karena cukup menarik perhatian.",
+      date:new Date().toISOString()
+    },
+    {
+      title:"Topik Baru Mendadak Masuk Daftar Trending",
+      category:"Trending",
+      image:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=trending+media+sosial",
+      description:"Percakapan di media sosial berubah cepat dan membuat topik ini ikut ramai.",
+      date:new Date().toISOString()
+    },
+    {
+      title:"Warga Menemukan Momen Unik di Jalan",
+      category:"Menarik",
+      image:"https://images.unsplash.com/photo-1494522358652-f30e61a60313?auto=format&fit=crop&w=900&q=80",
+      url:"https://www.google.com/search?q=berita+unik",
+      description:"Momen tidak biasa ini berhasil diabadikan dan dibagikan oleh warga.",
+      date:new Date().toISOString()
+    }
+  ];
+
+  const $ = id => document.getElementById(id);
+
+  let news;
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_NEWS));
+    news = Array.isArray(saved) && saved.length ? saved : defaultNews;
+  } catch(e) {
+    news = defaultNews;
+  }
+
+  news = news.map(item => ({
+    ...item,
+    url: item.url || ""
+  }));
+
+  function saveNewsStorage(){
+    localStorage.setItem(STORAGE_NEWS, JSON.stringify(news));
+  }
+
+  function escapeHTML(value){
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function showToast(message){
+    const toast = $("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
+  }
+
+  function render(){
+    const box = $("newsContainer");
+
+    if(!news.length){
+      box.innerHTML = '<div class="empty">Belum ada berita.</div>';
+      return;
+    }
+
+    box.innerHTML = news.map((item,index) => {
+      const cls =
+        item.category === "Trending" ? "badge hot" :
+        item.category === "Lucu" ? "badge lucu" : "badge";
+
+      const date = item.date
+        ? new Date(item.date).toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"})
+        : "Hari ini";
+
+      return `
+        <article class="card">
+          <a class="image-link"
+             href="${escapeHTML(item.url || '#')}"
+             ${item.url ? 'target="_blank" rel="noopener noreferrer"' : 'onclick="return false;"'}
+             aria-label="Buka berita: ${escapeHTML(item.title)}">
+            <img src="${escapeHTML(item.image || fallbackImage)}"
+                 alt="${escapeHTML(item.title)}"
+                 onerror="this.onerror=null;this.src='${fallbackImage}'">
+          </a>
+          <div class="card-body">
+            <span class="${cls}">${escapeHTML(item.category)}</span>
+            <h3>${escapeHTML(item.title)}</h3>
+            <p>${escapeHTML(item.description)}</p>
+            <div class="date">🕒 ${date}</div>
+
+            ${isAdmin ? `
+              <div class="admin-actions">
+                <button class="btn edit" data-edit="${index}">✏️ Edit</button>
+                <button class="btn del" data-delete="${index}">🗑️ Hapus</button>
+              </div>
+            ` : ""}
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  function openMenu(){
+    $("menu").classList.toggle("open");
+  }
+
+  function closeMenu(){
+    $("menu").classList.remove("open");
+  }
+
+  function setTheme(mode){
+    document.body.classList.toggle("dark", mode === "dark");
+    localStorage.setItem(STORAGE_THEME, mode);
+    closeMenu();
+    showToast(mode === "dark" ? "🌙 Mode gelap aktif" : "☀️ Mode terang aktif");
+  }
+
+  function loadTheme(){
+    const saved = localStorage.getItem(STORAGE_THEME);
+    document.body.classList.toggle("dark", saved === "dark");
+  }
+
+  function login(){
+    const password = prompt("Masukkan password admin:");
+
+    if(password === PASSWORD){
+      isAdmin = true;
+      $("adminPanel").classList.add("show");
+      render();
+      closeMenu();
+      showToast("🔓 Login admin berhasil");
+    }else if(password !== null){
+      showToast("❌ Password salah");
+    }
+  }
+
+  function logout(){
+    isAdmin = false;
+    editingIndex = -1;
+    $("adminPanel").classList.remove("show");
+    clearForm();
+    render();
+    showToast("🔒 Keluar dari admin");
+  }
+
+  function clearForm(){
+    $("title").value = "";
+    $("category").value = "Berita";
+    $("image").value = "";
+    $("url").value = "";
+    $("description").value = "";
+    editingIndex = -1;
+    $("saveBtn").textContent = "➕ Tambahkan Berita";
+  }
+
+  function saveForm(){
+    if(!isAdmin){
+      showToast("🔒 Masuk sebagai admin terlebih dahulu");
+      return;
+    }
+
+    const title = $("title").value.trim();
+    const category = $("category").value;
+    const image = $("image").value.trim();
+    const url = $("url").value.trim();
+    const description = $("description").value.trim();
+
+    if(!title || !description){
+      showToast("⚠️ Judul dan isi wajib diisi");
+      return;
+    }
+
+    const item = {
+      title,
+      category,
+      image:image || fallbackImage,
+      url:url || "",
+      description,
+      date:new Date().toISOString()
+    };
+
+    if(editingIndex === -1){
+      news.unshift(item);
+      showToast("📰 Berita berhasil ditambahkan");
+    }else{
+      news[editingIndex] = item;
+      showToast("✏️ Berita berhasil diperbarui");
+    }
+
+    saveNewsStorage();
+    clearForm();
+    render();
+  }
+
+  function edit(index){
+    const item = news[index];
+    $("title").value = item.title;
+    $("category").value = item.category;
+    $("image").value = item.image;
+    $("url").value = item.url || "";
+    $("description").value = item.description;
+    editingIndex = index;
+    $("saveBtn").textContent = "💾 Simpan Perubahan";
+    $("adminPanel").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+
+  function remove(index){
+    if(confirm("Hapus berita ini?")){
+      news.splice(index,1);
+      saveNewsStorage();
+      render();
+      showToast("🗑️ Berita dihapus");
+    }
+  }
+
+  /* EVENT LISTENERS */
+  $("menuBtn").addEventListener("click", function(e){
+    e.stopPropagation();
+    openMenu();
+  });
+
+  $("adminBtn").addEventListener("click", login);
+  $("lightBtn").addEventListener("click", () => setTheme("light"));
+  $("darkBtn").addEventListener("click", () => setTheme("dark"));
+  $("refreshBtn").addEventListener("click", () => {
+    closeMenu();
+    render();
+    showToast("🔄 Berita diperbarui");
+  });
+
+  $("saveBtn").addEventListener("click", saveForm);
+  $("cancelEditBtn").addEventListener("click", clearForm);
+  $("logoutBtn").addEventListener("click", logout);
+
+  $("newsContainer").addEventListener("click", function(e){
+    const editButton = e.target.closest("[data-edit]");
+    const deleteButton = e.target.closest("[data-delete]");
+
+    if(editButton) edit(Number(editButton.dataset.edit));
+    if(deleteButton) remove(Number(deleteButton.dataset.delete));
+  });
+
+  document.addEventListener("click", function(e){
+    if(!e.target.closest(".menu-wrap")) closeMenu();
+  });
+
+  loadTheme();
+  saveNewsStorage();
+  render();
+
+})();
+</script>
+
+</body>
+</html>
