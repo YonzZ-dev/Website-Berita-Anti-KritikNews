@@ -5,15 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#111827">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';">
-<title>Website Berita Anti Kritik</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://calzhutobtwfcshkgixm.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';">
+<title>Website Berita Anti Kritik | YonzZ</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap');
 
 :root{
-  --bg:#eef3ff;--card:#fff;--text:#172033;--muted:#667085;
-  --header:#111827;--border:#e5eaf2;--accent:#ffcc00;
+  --bg:#eef3ff;
+  --card:#ffffff;
+  --text:#172033;
+  --title:#111827;
+  --body-text:#172033;
+  --muted:#667085;
+  --header:#111827;
+  --border:#e5eaf2;
+  --accent:#ffcc00;
   --shadow:0 12px 38px rgba(30,45,80,.12);
 }
 *{box-sizing:border-box}
@@ -27,7 +34,13 @@ body{
   transition:background .35s,color .35s;overflow-x:hidden;
 }
 body.dark{
-  --bg:#080b12;--card:#151c2b;--text:#f1f5f9;--muted:#aab4c5;--border:#283348;
+  --bg:#080b12;
+  --card:#151c2b;
+  --text:#f1f5f9;
+  --title:#ffffff;
+  --body-text:#f1f5f9;
+  --muted:#aab4c5;
+  --border:#283348;
   background:
     radial-gradient(circle at 8% 8%,rgba(75,95,160,.18),transparent 24%),
     radial-gradient(circle at 92% 18%,rgba(80,100,180,.15),transparent 26%),
@@ -266,7 +279,377 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
 .access-alert-title{font-weight:800;margin-bottom:5px}
 .access-alert-user{font-weight:700;color:var(--accent,#ffcc00);margin-bottom:10px}
 .access-alert-time{font-size:11px;color:var(--muted);margin-top:8px}
+
+/* ===== Explicit text contrast for Light/Dark mode ===== */
+body:not(.dark) .card h3,
+body:not(.dark) .section-title,
+body:not(.dark) .comment-user,
+body:not(.dark) .comment-text,
+body:not(.dark) .admin-item,
+body:not(.dark) .panel h2,
+body:not(.dark) .panel h3{
+  color:#172033;
+}
+
+body.dark .card h3,
+body.dark .section-title,
+body.dark .comment-user,
+body.dark .comment-text,
+body.dark .admin-item,
+body.dark .panel h2,
+body.dark .panel h3{
+  color:#f1f5f9;
+}
+
+body:not(.dark) .card p,
+body:not(.dark) .small,
+body:not(.dark) .comment-time,
+body:not(.dark) .date,
+body:not(.dark) .admin-role{
+  color:#667085;
+}
+
+body.dark .card p,
+body.dark .small,
+body.dark .comment-time,
+body.dark .date,
+body.dark .admin-role{
+  color:#aab4c5;
+}
+
+body:not(.dark) input,
+body:not(.dark) textarea,
+body:not(.dark) select{
+  color:#172033;
+}
+
+body.dark input,
+body.dark textarea,
+body.dark select{
+  color:#f1f5f9;
+}
+
+body:not(.dark) input::placeholder,
+body:not(.dark) textarea::placeholder{
+  color:#667085;
+}
+
+body.dark input::placeholder,
+body.dark textarea::placeholder{
+  color:#aab4c5;
+}
+
+
+/* ===== Final light-mode text visibility fix =====
+   Keep intentional white text on header, hero, badges and buttons. */
+body:not(.dark) main .panel h2,
+body:not(.dark) main .panel h3,
+body:not(.dark) main .panel p,
+body:not(.dark) main .panel label,
+body:not(.dark) main .panel .small,
+body:not(.dark) main .panel .admin-item,
+body:not(.dark) main .panel .admin-name,
+body:not(.dark) main .comment-section .section-title,
+body:not(.dark) main .comment-box,
+body:not(.dark) main .comment-box label,
+body:not(.dark) main .comment,
+body:not(.dark) main .comment-user,
+body:not(.dark) main .comment-text,
+body:not(.dark) main .comment-time,
+body:not(.dark) main .news-grid .card h3,
+body:not(.dark) main .news-grid .card p,
+body:not(.dark) main .news-grid .card .date {
+  color: #172033;
+}
+
+/* Secondary/muted text */
+body:not(.dark) main .panel .admin-role,
+body:not(.dark) main .panel .username-note,
+body:not(.dark) main .comment-time,
+body:not(.dark) main .news-grid .card .date,
+body:not(.dark) main .small {
+  color: #667085;
+}
+
+/* Form controls in light mode */
+body:not(.dark) main input,
+body:not(.dark) main textarea,
+body:not(.dark) main select,
+body:not(.dark) .birth-field select {
+  color: #172033;
+  -webkit-text-fill-color: #172033;
+  background-color: #ffffff;
+}
+
+/* Do not change intentionally styled white text */
+body:not(.dark) .btn,
+body:not(.dark) .badge,
+body:not(.dark) .admin-label,
+body:not(.dark) .menu-btn,
+body:not(.dark) header,
+body:not(.dark) header *,
+body:not(.dark) .hero,
+body:not(.dark) .hero *,
+body:not(.dark) footer,
+body:not(.dark) footer * {
+  /* preserve component-specific colors */
+}
+
+
+/* Final password-eye fix */
+.admin-login-modal:not(.show) .password-toggle{
+  display:none !important;
+}
+.admin-login-modal.show .password-toggle{
+  display:flex;
+}
+.password-wrap{
+  position:relative;
+  width:100%;
+  margin:0 0 11px;
+}
+.password-wrap .password-toggle{
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  margin:0;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  color:var(--text);
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  padding:0;
+  z-index:3;
+}
+.password-wrap input{
+  width:100%;
+  margin:0;
+  padding-right:48px;
+}
+
+
+/* Foto pembuat website */
+.creator-photo-section{
+  width:min(92%, 760px);
+  margin:34px auto 22px;
+  padding:22px;
+  text-align:center;
+  border-radius:22px;
+  background:var(--card, rgba(255,255,255,.05));
+  border:1px solid var(--border, rgba(255,255,255,.12));
+  box-sizing:border-box;
+}
+.creator-photo-section h2{
+  margin:0 0 16px;
+  color:var(--text);
+}
+.creator-photo{
+  display:block;
+  width:min(100%, 420px);
+  max-height:560px;
+  object-fit:cover;
+  margin:0 auto;
+  border-radius:18px;
+  border:2px solid var(--border, rgba(255,255,255,.12));
+}
+.creator-photo-caption{
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:.95rem;
+}
+
+
+/* Final visual adjustment: pure white background */
+html, body {
+  background: #ffffff !important;
+}
+body {
+  background-color: #ffffff !important;
+}
+
+
+/* Creator photo: 4x4 cm */
+.creator-photo,
+.creator-photo img,
+.photo-pembuat,
+.photo-pembuat img,
+.author-photo,
+.author-photo img {
+  width: 4cm !important;
+  height: 4cm !important;
+  min-width: 4cm !important;
+  min-height: 4cm !important;
+  max-width: 4cm !important;
+  max-height: 4cm !important;
+  object-fit: cover !important;
+  aspect-ratio: 1 / 1 !important;
+  border-radius: 8px;
+}
+
+
+/* =========================
+   V4 SUPER PORTAL UI
+   ========================= */
+:root{
+  --portal-accent:#ffcc00;
+  --portal-blue:#2563eb;
+  --portal-green:#16a34a;
+  --portal-red:#dc2626;
+  --portal-soft:#f6f8fc;
+}
+body{background:#fff !important;background-color:#fff !important;}
+body.dark{
+  background:#080b12 !important;
+  background-color:#080b12 !important;
+}
+.portal-tools,.headline-section,.portal-stats,.community-tools,.newsletter-box{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  box-shadow:var(--shadow);margin:24px 0;padding:18px;
+}
+.portal-search-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center}
+.portal-search{
+  width:100%;border:1px solid var(--border);border-radius:13px;padding:13px 15px;
+  background:var(--card);color:var(--text);outline:none;
+}
+.portal-search:focus{border-color:var(--portal-blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.portal-filter-row{display:flex;gap:8px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:thin}
+.portal-filter{
+  flex:0 0 auto;border:1px solid var(--border);border-radius:999px;padding:9px 13px;
+  background:var(--card);color:var(--text);font-weight:700;font-size:13px
+}
+.portal-filter.active{background:#111827;color:#fff;border-color:#111827}
+body.dark .portal-filter.active{background:#fff;color:#111827;border-color:#fff}
+.portal-filter:hover{transform:translateY(-1px)}
+.portal-select{border:1px solid var(--border);border-radius:12px;padding:11px;background:var(--card);color:var(--text)}
+.portal-tools-note{font-size:12px;color:var(--muted);margin-top:9px}
+.headline-grid{display:grid;grid-template-columns:1.7fr 1fr;gap:18px}
+.headline-main{position:relative;overflow:hidden;border-radius:18px;min-height:300px;background:#111827;color:#fff}
+.headline-main img{width:100%;height:100%;min-height:300px;object-fit:cover;opacity:.72}
+.headline-overlay{position:absolute;inset:auto 0 0;padding:26px;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.headline-overlay h2{margin:8px 0;font:900 clamp(23px,4vw,38px)/1.08 Montserrat,Arial}
+.headline-overlay p{margin:0;color:#e5e7eb;line-height:1.55}
+.headline-side{display:grid;gap:12px}
+.mini-headline{display:grid;grid-template-columns:105px 1fr;gap:12px;align-items:center;padding:10px;border:1px solid var(--border);border-radius:14px;background:var(--card)}
+.mini-headline img{width:105px;height:82px;object-fit:cover;border-radius:10px}
+.mini-headline h3{font-size:14px;line-height:1.35;margin:4px 0}
+.mini-headline small{color:var(--muted)}
+.portal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.portal-stat{padding:15px;border-radius:15px;background:var(--portal-soft);border:1px solid var(--border)}
+body.dark .portal-stat{background:#101827}
+.portal-stat strong{display:block;font:900 24px Montserrat,Arial}
+.portal-stat span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.card .card-body h3{cursor:pointer}
+.card .card-body h3:hover{text-decoration:underline}
+.card-meta{display:flex;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:12px;margin-top:10px}
+.news-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.news-action{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:10px;padding:7px 9px;font-size:12px;font-weight:700}
+.news-action:hover{background:var(--portal-soft)}
+body.dark .news-action:hover{background:#202a3d}
+.saved-active{border-color:#eab308!important;background:#fff7cc!important;color:#7a5b00!important}
+body.dark .saved-active{background:#3a3215!important;color:#ffe78a!important}
+.article-modal{position:fixed;inset:0;z-index:5000;background:rgba(0,0,0,.68);display:none;align-items:center;justify-content:center;padding:18px}
+.article-modal.show{display:flex}
+.article-dialog{width:min(900px,100%);max-height:92vh;overflow:auto;background:var(--card);color:var(--text);border-radius:22px;box-shadow:0 30px 90px rgba(0,0,0,.4)}
+.article-dialog img{width:100%;max-height:390px;object-fit:cover}
+.article-content{padding:24px}
+.article-content h2{font:900 clamp(24px,4vw,40px)/1.1 Montserrat,Arial;margin:10px 0}
+.article-content p{line-height:1.75}
+.article-close{position:sticky;top:12px;float:right;margin:12px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(17,24,39,.8);color:#fff;font-size:20px;z-index:2}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.related-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer}
+.related-card img{height:90px;display:block}
+.related-card div{padding:9px;font-size:12px;font-weight:800}
+.community-tools{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.community-card{border:1px solid var(--border);border-radius:16px;padding:16px}
+.community-card h3{margin-top:0}
+.reaction-row{display:flex;gap:7px;flex-wrap:wrap}
+.reaction-btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:999px;padding:8px 11px;font-weight:700}
+.reaction-btn.active{border-color:#f59e0b;background:#fff7ed}
+body.dark .reaction-btn.active{background:#35240e}
+.comment-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.comment-like{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:9px;padding:6px 9px}
+.comment-like.active{background:#eff6ff;border-color:#93c5fd;color:#1d4ed8}
+body.dark .comment-like.active{background:#172554;color:#bfdbfe}
+.backup-row{display:flex;gap:8px;flex-wrap:wrap}
+#backupFile{display:none}
+.breaking-bar{display:flex;align-items:center;gap:10px;margin:16px 0;padding:10px 13px;border-radius:12px;background:#111827;color:#fff;overflow:hidden}
+.breaking-label{background:#dc2626;padding:5px 8px;border-radius:7px;font-weight:900;font-size:11px;flex:0 0 auto}
+.breaking-text{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.creator-photo-section .creator-photo{width:4cm!important;height:4cm!important;min-width:4cm!important;min-height:4cm!important;max-width:4cm!important;max-height:4cm!important;object-fit:cover!important;aspect-ratio:1/1!important}
+@media(max-width:820px){
+  .portal-search-row{grid-template-columns:1fr}
+  .headline-grid{grid-template-columns:1fr}
+  .headline-side{grid-template-columns:1fr 1fr}
+  .portal-stats{grid-template-columns:repeat(2,1fr)}
+  .community-tools{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .headline-side{grid-template-columns:1fr}
+  .portal-stats{grid-template-columns:1fr 1fr}
+  .related-grid{grid-template-columns:1fr}
+  .portal-tools,.headline-section,.portal-stats,.community-tools{padding:13px}
+}
+@media print{
+  header,.menu-wrap,.portal-tools,.admin-login-modal,.admin-panel,.news-actions,.comment-box,.scrollTop,.toast,.article-close{display:none!important}
+  body,body.dark{background:#fff!important;color:#111!important}
+  .card{break-inside:avoid;box-shadow:none}
+}
+
+
+.story-label{margin:14px 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.08em;opacity:.75}.article-story{line-height:1.8;font-size:1rem}.article-story p{margin:0 0 14px}.article-story p:last-child{margin-bottom:0}
 </style>
+
+<meta name="description" content="Website Berita Anti Kritik: berita terbaru, trending, lucu, menarik, komentar pembaca, pencarian, dan berita terpopuler.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="Website Berita Anti Kritik">
+<meta property="og:description" content="Berita terbaru, trending, lucu, dan informasi menarik.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+
+<style id="v7-extra-style">
+.v7-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.v7-tools button,.v7-tools select,.v7-tools input{padding:9px 11px;border:1px solid #ccc;border-radius:9px;background:inherit;color:inherit}
+.v7-admin-box{border:1px solid #ddd;border-radius:12px;padding:14px;margin-top:14px}
+.v7-preview{max-width:220px;max-height:140px;object-fit:cover;border-radius:10px;margin-top:8px;display:none}
+.v7-badge{font-size:.78em;opacity:.8;margin-left:5px}
+.v7-breaking{font-weight:700}
+.v7-muted{opacity:.7}
+</style>
+
+
+<style id="v7-jpg-design">
+.v7-jpg-picker{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 17px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.14);
+  background:linear-gradient(135deg,#111827,#374151);
+  color:#fff;
+  font-weight:700;
+  letter-spacing:.1px;
+  cursor:pointer;
+  box-shadow:0 7px 18px rgba(0,0,0,.14);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  overflow:hidden;
+}
+.v7-jpg-picker:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(0,0,0,.18);filter:brightness(1.06)}
+.v7-jpg-picker:active{transform:translateY(0) scale(.98)}
+.v7-jpg-picker .v7-camera{font-size:1.15em}
+.v7-jpg-picker input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.v7-jpg-name{margin-top:7px;font-size:.86em;opacity:.72}
+</style>
+
 </head>
 
 <body>
@@ -323,7 +706,8 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
       <div class="menu" id="menu">
         <button type="button" id="adminBtn">🔐 Masuk sebagai Admin</button>
         <button type="button" id="lightBtn">☀️ Mode Terang</button>
-        <button type="button" id="darkBtn">🌙 Mode Gelap</button>
+        <button type="button" id="darkBtn">🌙 Mode Gelap(Rekomendasi)</button>
+        <button type="button" id="recommendBtn"></button>
         <button type="button" id="refreshBtn">🔄 Refresh Berita</button>
       </div>
     </div>
@@ -338,6 +722,10 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
     <div class="admin-role-tabs">
       <button type="button" id="mainRoleBtn" class="active">👑 Admin Utama</button>
       <button type="button" id="secondaryRoleBtn">🛡️ Admin Kedua</button>
+    </div>
+    <div class="login-field" id="mainEmailField">
+      <label for="loginAdminEmail">Email Admin Utama</label>
+      <input id="loginAdminEmail" type="email" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="Email akun Supabase Auth">
     </div>
     <div class="login-field" id="secondaryUserField" style="display:none">
       <label for="loginAdminUser">Username Admin Kedua</label>
@@ -366,6 +754,46 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
     </div>
   </section>
 
+<div class="breaking-bar" aria-label="Berita terkini">
+  <span class="breaking-label">BREAKING</span>
+  <span class="breaking-text" id="breakingText">Memuat berita terbaru...</span>
+</div>
+
+<section class="portal-tools reveal" aria-label="Pencarian dan filter berita">
+  <div class="portal-search-row">
+    <input id="portalSearch" class="portal-search" type="search"
+      placeholder="🔎 Cari judul, kategori, atau isi berita..." autocomplete="off">
+    <select id="portalSort" class="portal-select" aria-label="Urutkan berita">
+      <option value="newest">Terbaru</option>
+      <option value="oldest">Terlama</option>
+      <option value="views">Paling Dibaca</option>
+      <option value="likes">Paling Disukai</option>
+    </select>
+    <button class="btn secondary" id="clearPortalSearch" type="button">Reset</button>
+  </div>
+  <div class="portal-filter-row" id="portalFilters">
+    <button class="portal-filter active" data-category="Semua">Semua</button>
+    <button class="portal-filter" data-category="Berita">Berita</button>
+    <button class="portal-filter" data-category="Trending">Trending</button>
+    <button class="portal-filter" data-category="Lucu">Lucu</button>
+    <button class="portal-filter" data-category="Menarik">Menarik</button>
+  </div>
+  <div class="portal-tools-note" id="resultInfo">Menampilkan semua berita.</div>
+</section>
+
+<section class="headline-section reveal" aria-label="Berita utama">
+  <h2 class="section-title" style="margin-top:0">⭐ Berita Utama</h2>
+  <div id="headlineContent"></div>
+</section>
+
+<section class="portal-stats reveal" aria-label="Statistik website">
+  <div class="portal-stat"><strong id="statNews">0</strong><span>Total berita</span></div>
+  <div class="portal-stat"><strong id="statViews">0</strong><span>Total pembacaan</span></div>
+  <div class="portal-stat"><strong id="statComments">0</strong><span>Total komentar</span></div>
+  <div class="portal-stat"><strong id="statSaved">0</strong><span>Berita tersimpan</span></div>
+</section>
+
+
   <section class="panel" id="adminPanel">
     <h2>⚙️ Panel Admin</h2>
     <div class="small" id="adminRoleText"></div>
@@ -375,7 +803,17 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
       <select id="category">
         <option>Berita</option><option>Trending</option><option>Lucu</option><option>Menarik</option>
       </select>
-      <input id="image" type="url" placeholder="URL gambar (https://...)">
+      <div class="v7-image-upload-box" style="margin:10px 0;padding:12px;border:1px solid #ddd;border-radius:10px">
+        <label for="v7NewsImageFile" style="display:block;font-weight:700;margin-bottom:6px">🖼️ Gambar Berita (JPG/JPEG)</label>
+        <label class="v7-jpg-picker" title="Pilih gambar JPG/JPEG">
+          <span class="v7-camera">📷</span>
+          <span>Pilih Foto Berita</span>
+          <input id="v7NewsImageFile" type="file" accept=".jpg,.jpeg,image/jpeg">
+        </label>
+        <div id="v7NewsImageStatus" class="v7-jpg-name">Belum memilih gambar.</div>
+        <img id="v7NewsImagePreview" class="v7-preview" alt="Preview gambar berita" style="display:none;max-width:220px;max-height:140px;object-fit:cover;border-radius:18px;margin-top:10px;box-shadow:0 8px 20px rgba(0,0,0,.14)">
+      </div>
+      <input id="image" type="url" placeholder="Atau URL gambar (https://...)">
       <input id="url" type="url" placeholder="URL saat gambar diklik (https://...)">
       <textarea id="description" placeholder="Isi berita..."></textarea>
       <div class="row">
@@ -398,7 +836,7 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
       <div class="admin-list" id="adminList"></div>
 
       <h3 style="margin:24px 0 8px">🚫 Blokir Pengguna</h3>
-			    <input id="blockUsername" placeholder="Username yang ingin diblokir (4-12 karakter)" maxlength="12">
+      <input id="blockUsername" placeholder="Username yang ingin diblokir (4-12 karakter)" maxlength="12">
       <select id="blockDuration">
         <option value="1">1 hari</option>
         <option value="10">10 hari</option>
@@ -416,6 +854,23 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
         Admin utama dapat mencabut status admin kedua. Data role pada file HTML ini adalah sistem demo lokal.
       </p>
     </div>
+
+
+      <h3 style="margin:24px 0 8px">💾 Cadangan Data</h3>
+      <p class="small">Simpan data lokal website sebagai JSON atau pulihkan dari cadangan sebelumnya.</p>
+      <div class="backup-row">
+        <button class="btn secondary" id="exportDataBtn">⬇️ Export Data</button>
+        <button class="btn secondary" id="importDataBtn">⬆️ Import Data</button>
+        <input id="backupFile" type="file" accept="application/json,.json">
+      </div>
+
+      <h3 style="margin:24px 0 8px">📊 Statistik Admin</h3>
+      <div class="portal-stats" style="margin:0;box-shadow:none;padding:0;border:0">
+        <div class="portal-stat"><strong id="adminStatNews">0</strong><span>Berita</span></div>
+        <div class="portal-stat"><strong id="adminStatComments">0</strong><span>Komentar</span></div>
+        <div class="portal-stat"><strong id="adminStatViews">0</strong><span>Pembacaan</span></div>
+        <div class="portal-stat"><strong id="adminStatBlocks">0</strong><span>Blokir aktif</span></div>
+      </div>
 
     <div class="row" style="margin-top:18px">
       <button class="btn secondary" id="logoutBtn">🔒 Keluar Admin</button>
@@ -441,7 +896,61 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
     </div>
     <div class="comment-list" id="commentList"></div>
   </section>
+
+<section class="community-tools reveal" aria-label="Komunitas pembaca">
+  <div class="community-card">
+    <h3>⭐ Reaksi Website</h3>
+    <p class="small">Kasih reaksi ke website. Data ini tersimpan di perangkat ini.</p>
+    <div class="reaction-row" id="siteReactions">
+      <button class="reaction-btn" data-site-reaction="suka">👍 Suka <span>0</span></button>
+      <button class="reaction-btn" data-site-reaction="lucu">😂 Lucu <span>0</span></button>
+      <button class="reaction-btn" data-site-reaction="keren">🔥 Keren <span>0</span></button>
+      <button class="reaction-btn" data-site-reaction="kaget">😮 Kaget <span>0</span></button>
+    </div>
+  </div>
+  <div class="community-card">
+    <h3>🔖 Berita Tersimpan</h3>
+    <p class="small">Simpan artikel untuk dibaca lagi. Karena manusia ternyata suka kehilangan tab.</p>
+    <button class="btn primary" id="showSavedBtn">Lihat Berita Tersimpan</button>
+    <button class="btn secondary" id="showAllBtn">Tampilkan Semua</button>
+  </div>
+</section>
+
+
+  <section class="creator-photo-section reveal" aria-label="Foto pembuat website">
+    <h2>👤 Pembuat Website</h2>
+    <img
+      class="creator-photo"
+      src="data:image/jpeg;base64,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
+		      alt="Foto pembuat Website Berita Anti Kritik"
+      loading="eager">
+    <p class="creator-photo-caption">Foto pembuat Website Berita Anti Kritik</p>
+  </section>
+
 </main>
+
+
+<div class="article-modal" id="articleModal" aria-hidden="true">
+  <article class="article-dialog" role="dialog" aria-modal="true" aria-labelledby="articleModalTitle">
+    <button class="article-close" id="articleClose" aria-label="Tutup">✕</button>
+    <img id="articleModalImage" src="" alt="">
+    <div class="article-content">
+      <span class="badge" id="articleModalCategory">Berita</span>
+      <h2 id="articleModalTitle">Judul berita</h2>
+      <div class="card-meta" id="articleModalMeta"></div>
+      <div id="articleModalStoryLabel" class="story-label" style="display:none">✍️ CERITA KARANGAN • FIKSI</div>
+      <div id="articleModalStory" class="article-story" style="display:none"></div>
+      <p id="articleModalDescription"></p>
+      <div class="news-actions">
+        <button class="news-action" id="articleShareBtn">🔗 Bagikan</button>
+        <button class="news-action" id="articleSaveBtn">🔖 Simpan</button>
+        <button class="news-action" id="articleSourceBtn">🌐 Buka Sumber</button>
+      </div>
+      <h3 style="margin-top:26px">📰 Berita Terkait</h3>
+      <div class="related-grid" id="articleRelated"></div>
+    </div>
+  </article>
+</div>
 
 <footer>
   <strong>© 2026 Website Berita Anti Kritik By YonzZ</strong>
@@ -451,6 +960,11 @@ footer strong{color:#fff;display:block;margin-bottom:7px}
 <button id="scrollTop" aria-label="Kembali ke atas">↑</button>
 <div class="toast" id="toast"></div>
 
+<script id="supabase-auth-config">
+const SUPABASE_URL="https://calzhutobtwfcshkgixm.supabase.co";
+const SUPABASE_KEY="sb_publishable_ojg7L_JThZo1ExOKTe5U5Q_LsEY4jwC";
+const REST=SUPABASE_URL+"/rest/v1";
+</script>
 <script>
 (function(){
 "use strict";
@@ -476,17 +990,17 @@ const fallbackImage="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(
 );
 
 const defaultNews=[
-{title:"Kucing Lokal Mendadak Jadi Selebritas",category:"Lucu",image:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=kucing",description:"Seekor kucing berhasil menarik perhatian warga setelah santai duduk di atas motor.",date:new Date().toISOString()},
-{title:"Internet Kembali Ramai Membahas Hal Random",category:"Trending",image:"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+internet",description:"Topik sederhana mendadak menjadi pembicaraan ramai di internet.",date:new Date().toISOString()},
-{title:"Langit Sore Membuat Warga Berhenti Sejenak",category:"Menarik",image:"https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=langit+sore",description:"Pemandangan langit sore membuat sejumlah warga berhenti untuk mengambil foto.",date:new Date().toISOString()},
-{title:"Anak Sekolah Menemukan Cara Baru Melawan Ngantuk",category:"Berita",image:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=sekolah",description:"Cara sederhana ini menjadi bahan pembicaraan karena cukup menarik perhatian.",date:new Date().toISOString()},
-{title:"Topik Baru Mendadak Masuk Daftar Trending",category:"Trending",image:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+media+sosial",description:"Percakapan di media sosial berubah cepat dan membuat topik ini ikut ramai.",date:new Date().toISOString()},
-{title:"Warga Menemukan Momen Unik di Jalan",category:"Menarik",image:"https://images.unsplash.com/photo-1494522358652-f30e61a60313?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=berita+unik",description:"Momen tidak biasa ini berhasil diabadikan dan dibagikan oleh warga.",date:new Date().toISOString()}
+{title:"Kucing Lokal Mendadak Jadi Selebritas",category:"Lucu",image:"https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=kucing",description:"Seekor kucing berhasil menarik perhatian warga setelah santai duduk di atas motor.",story:'Pagi itu, seekor kucing kampung bernama Oyen tiba-tiba memilih sebuah motor yang sedang parkir sebagai tempat duduknya. Awalnya warga hanya tertawa melihat tingkahnya. Namun dalam beberapa menit, orang-orang mulai berhenti untuk memotret. Oyen tetap santai, seolah sudah terbiasa menjadi pusat perhatian.\n\nPemilik motor akhirnya datang dan bukannya mengusir, ia malah menunggu sampai Oyen selesai "bertugas". Menjelang siang, foto Oyen sudah beredar di grup warga dan menjadi bahan candaan. Tidak ada kejadian besar hari itu, hanya seekor kucing, sebuah motor, dan internet yang terlalu cepat menyukai hal-hal random.',date:new Date().toISOString()},
+{title:"Internet Kembali Ramai Membahas Hal Random",category:"Trending",image:"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+internet",description:"Topik sederhana mendadak menjadi pembicaraan ramai di internet.",story:'Sebuah topik sederhana mendadak ramai setelah seorang pengguna mengunggah pertanyaan iseng di media sosial. Tidak ada hadiah, tidak ada kontroversi besar, tetapi kolom komentar berkembang jauh lebih cepat dari perkiraan. Orang-orang mulai membuat teori, lelucon, dan versi mereka sendiri.\n\nDalam hitungan jam, topik tersebut berpindah dari satu platform ke platform lain. Fenomena itu menjadi contoh kecil bagaimana sesuatu yang awalnya biasa saja bisa berubah menjadi pembicaraan besar ketika internet ikut campur. Dan seperti biasa, manusia ternyata cukup mudah berkumpul hanya karena satu hal random.',date:new Date().toISOString()},
+{title:"Langit Sore Membuat Warga Berhenti Sejenak",category:"Menarik",image:"https://images.unsplash.com/photo-1534088568595-a066f410bcda?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=langit+sore",description:"Pemandangan langit sore membuat sejumlah warga berhenti untuk mengambil foto.",story:'Menjelang sore, warna langit berubah perlahan dari biru menjadi jingga. Beberapa warga yang sedang berjalan pulang berhenti sebentar untuk melihat pemandangan tersebut. Seorang anak bahkan meminta ayahnya menunggu beberapa menit sebelum melanjutkan perjalanan.\n\nTidak ada acara khusus dan tidak ada pertunjukan apa pun. Hanya langit sore yang kebetulan sedang bagus. Beberapa foto kemudian dibagikan ke grup warga dan membuat orang lain ikut keluar rumah untuk melihatnya. Momen sederhana itu akhirnya menjadi cerita kecil yang dibicarakan sampai malam.',date:new Date().toISOString()},
+{title:"Anak Sekolah Menemukan Cara Baru Melawan Ngantuk",category:"Berita",image:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=sekolah",description:"Cara sederhana ini menjadi bahan pembicaraan karena cukup menarik perhatian.",story:'Bel pulang belum juga berbunyi ketika seorang siswa menemukan cara sederhana untuk tetap fokus di kelas: berdiri sebentar, minum air, lalu kembali mengerjakan tugas. Teman-temannya awalnya menganggap cara itu aneh, tetapi beberapa ikut mencobanya ketika rasa kantuk mulai menyerang.\n\nGuru yang melihat kejadian tersebut justru mengingatkan bahwa tidur yang cukup tetap merupakan cara utama untuk menjaga konsentrasi. Percobaan kecil itu kemudian berubah menjadi bahan bercanda satu kelas. Kesimpulannya sederhana: kalau sudah terlalu ngantuk, tubuh memang sedang memberi notifikasi yang sebaiknya tidak diabaikan.',date:new Date().toISOString()},
+{title:"Topik Baru Mendadak Masuk Daftar Trending",category:"Trending",image:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=trending+media+sosial",description:"Percakapan di media sosial berubah cepat dan membuat topik ini ikut ramai.",story:'Sebuah topik baru tiba-tiba muncul dalam daftar percakapan populer setelah beberapa akun membahasnya secara bersamaan. Dalam waktu singkat, muncul berbagai komentar, meme, dan pendapat yang saling berbeda. Sebagian orang membahasnya serius, sementara yang lain datang hanya untuk ikut bercanda.\n\nPopularitas topik tersebut kemudian naik turun sepanjang hari. Fenomena ini menunjukkan betapa cepat perhatian di media sosial berpindah. Hari ini satu topik menjadi pusat perhatian, besok bisa saja digantikan hal lain yang bahkan lebih random.',date:new Date().toISOString()},
+{title:"Warga Menemukan Momen Unik di Jalan",category:"Menarik",image:"https://images.unsplash.com/photo-1494522358652-f30e61a60313?auto=format&fit=crop&w=900&q=80",url:"https://www.google.com/search?q=berita+unik",description:"Momen tidak biasa ini berhasil diabadikan dan dibagikan oleh warga.",story:'Sore hari di sebuah jalan yang biasanya ramai, seorang warga melihat kejadian kecil yang tidak biasa. Seekor burung berdiri di atas papan toko sambil memperhatikan lalu lintas dengan tenang. Seorang pejalan kaki berhenti dan mengambil foto karena posisi burung itu terlihat seperti sedang menjadi penjaga jalan.\n\nFoto tersebut dibagikan ke grup warga dan memancing berbagai komentar lucu. Tidak ada kejadian berbahaya ataupun luar biasa. Justru karena sangat sederhana, momen itu terasa menyenangkan. Kadang berita kecil memang tidak perlu dramatis untuk membuat orang tersenyum.',date:new Date().toISOString()}
 ];
 
 const $=id=>document.getElementById(id);
 
-function getLockedUsername(){
+ function getLockedUsername(){
   return localStorage.getItem(USERNAME_KEY)||"";
 }
 function usernameIsLocked(){
@@ -541,6 +1055,18 @@ function loadJSON(key,fallback){
 }
 let news=loadJSON(NEWS_KEY,defaultNews);
 if(!Array.isArray(news)||!news.length)news=defaultNews;
+
+// Pastikan berita bawaan selalu membawa cerita karangan.
+// Jika browser sudah menyimpan versi lama tanpa properti story, ambil story dari defaultNews.
+(function hydrateDefaultStories(){
+  const storyMap=new Map(defaultNews.map(n=>[String(n.title),n.story]));
+  news=news.map(n=>{
+    if(!n.story && storyMap.has(String(n.title))){
+      return {...n, story:storyMap.get(String(n.title))};
+    }
+    return n;
+  });
+})();
 let comments=loadJSON(COMMENT_KEY,[]);
 if(!Array.isArray(comments))comments=[];
 let admins=loadJSON(ADMIN_KEY,[]);
@@ -850,17 +1376,62 @@ function setUsernameOnce(value){
   $("title").value="";$("category").value="Berita";$("image").value="";$("url").value="";$("description").value="";
   editingIndex=-1;$("saveBtn").textContent="➕ Tambahkan Berita";
 }
-function saveNews(){
+
+async function uploadV7NewsJpg(file){
+  if(!file) return "";
+  if(file.type !== "image/jpeg"){
+    throw new Error("File harus JPG/JPEG.");
+  }
+  const raw = localStorage.getItem("antiKritikSupabaseSession");
+  if(!raw) throw new Error("Silakan login sebagai Admin Utama terlebih dahulu.");
+  let auth;
+  try { auth = JSON.parse(raw); } catch(e) { throw new Error("Session Supabase tidak valid."); }
+  if(!auth.access_token) throw new Error("Session Supabase tidak valid atau sudah berakhir.");
+
+  const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]/g,"_");
+  const path = "news/" + Date.now() + "_" + safeName;
+  const r = await fetch(SUPABASE_URL + "/storage/v1/object/news-images/" + path, {
+    method:"POST",
+    headers:{
+      "apikey":SUPABASE_KEY,
+      "Authorization":"Bearer " + auth.access_token,
+      "Content-Type":"image/jpeg",
+      "x-upsert":"false"
+    },
+    body:file
+  });
+  if(!r.ok){
+    let msg = "Upload JPG gagal.";
+    try { const d=await r.json(); msg=d.message||d.error||msg; } catch(e){}
+    throw new Error(msg);
+  }
+  return SUPABASE_URL + "/storage/v1/object/public/news-images/" + path;
+}
+
+async function saveNews(){
   if(!sessionRole){toast("🔒 Login admin dulu");return}
   const title=$("title").value.trim(),category=$("category").value,image=$("image").value.trim(),url=$("url").value.trim(),description=$("description").value.trim();
+  const jpgFile=$("v7NewsImageFile")?.files?.[0] || null;
+  if(jpgFile){
+    try{
+      $("v7NewsImageStatus").textContent="⏳ Mengunggah JPG ke Supabase...";
+      const uploadedUrl=await uploadV7NewsJpg(jpgFile);
+      $("image").value=uploadedUrl;
+      $("v7NewsImageStatus").textContent="✅ JPG berhasil di-upload dan siap dipakai.";
+    }catch(e){
+      $("v7NewsImageStatus").textContent="❌ "+(e.message||"Upload gagal");
+      toast("❌ "+(e.message||"Upload JPG gagal"));
+      return;
+    }
+  }
   if(!title||!description){toast("⚠️ Judul dan isi wajib diisi");return}
   const imageURL=safeURL(image),targetURL=safeURL(url);
   if(image&& !imageURL){toast("⚠️ URL gambar harus HTTPS");return}
   if(url&& !targetURL){toast("⚠️ URL tujuan harus HTTPS");return}
   const item={title,category,image:imageURL||fallbackImage,url:targetURL,description,date:new Date().toISOString()};
   if(sessionRole==="secondary" && editingIndex!==-1){toast("🛡️ Admin kedua hanya dapat menambahkan berita");return}
-  if(editingIndex===-1){news.unshift(item);toast("📰Berita ditambahkan")}
-	else{news[editingIndex]=item;toast("✏️ Berita diperbarui")}
+  if(editingIndex===-1){news.unshift(item);toast("📰 Berita ditambahkan")}
+  else{news[editingIndex]=item;toast("✏️ Berita diperbarui")}
   persist();clearForm();renderNews();renderTrending();
 }
 function editNews(i){
@@ -879,38 +1450,85 @@ function openAdminLogin(){
   $("adminLoginModal").setAttribute("aria-hidden","false");
   $("mainRoleBtn").classList.add("active");
   $("secondaryRoleBtn").classList.remove("active");
+  $("mainEmailField").style.display="block";
   $("secondaryUserField").style.display="none";
+  $("loginAdminEmail").value="";
   $("loginAdminUser").value="";
   $("loginAdminPassword").value="";
   $("adminLoginError").textContent="";
   setTimeout(()=>$("loginAdminPassword").focus(),60);
 }
 function closeAdminLogin(){
+  const password = $("loginAdminPassword");
+  if(password){
+    password.type = "password";
+    password.value = "";
+    const eye = password.parentElement?.querySelector(".password-toggle");
+    if(eye){
+      eye.textContent = "👁️";
+      eye.setAttribute("aria-label","Tampilkan password");
+      eye.setAttribute("title","Tampilkan password");
+    }
+  }
   $("adminLoginModal").classList.remove("show");
   $("adminLoginModal").setAttribute("aria-hidden","true");
 }
 function login(){openAdminLogin()}
-function performAdminLogin(){
+async function supabaseAuthLogin(email,password){
+  const r=await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=password",{
+    method:"POST",headers:{"apikey":SUPABASE_KEY,"Content-Type":"application/json"},
+    body:JSON.stringify({email,password})
+  });
+  const data=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(data.error_description||data.msg||"Login Supabase gagal");
+  return data;
+}
+
+async function getSupabaseAdmin(accessToken,userId){
+  const r=await fetch(REST+"/admins?select=id,username,role,user_id&user_id=eq."+encodeURIComponent(userId)+"&limit=1",{
+    headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+accessToken}
+  });
+  const data=await r.json().catch(()=>[]);
+  if(!r.ok) throw new Error(data.message||"Gagal memeriksa role admin");
+  return Array.isArray(data)?data[0]:null;
+}
+
+async function performAdminLogin(){
   const pass=$("loginAdminPassword").value;
   const error=$("adminLoginError");
   error.textContent="";
-  if(loginRole==="main"){
-    if(pass===mainPassword){
-      sessionRole="main";sessionUsername="Admin Utama";closeAdminLogin();updateAdminPanel();renderNews();renderComments();$("menu").classList.remove("open");toast("👑 Admin Utama aktif");
-    }else{
+  if(!pass){error.textContent="⚠️ Masukkan password.";return}
+
+	  if(loginRole==="main"){
+    const email=$("loginAdminEmail").value.trim();
+    if(!email){error.textContent="⚠️ Masukkan email Admin Utama.";$("loginAdminEmail").focus();return}
+    try{
+      const auth=await supabaseAuthLogin(email,pass);
+      const admin=await getSupabaseAdmin(auth.access_token,auth.user.id);
+      if(!admin || admin.role!=="admin_utama"){
+        await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+auth.access_token}}).catch(()=>{});
+        createAccessAlert("main");
+        error.textContent="❌ Akun ini bukan Admin Utama.";
+        return;
+      }
+      localStorage.setItem("antiKritikSupabaseSession",JSON.stringify(auth));
+      sessionRole="main";sessionUsername=admin.username||"Admin Utama";
+      closeAdminLogin();updateAdminPanel();renderNews();renderComments();$("menu").classList.remove("open");toast("👑 Admin Utama aktif via Supabase Auth");
+    }catch(e){
       createAccessAlert("main");
-      error.textContent="❌ Password Admin Utama salah.";
+      error.textContent="❌ "+(e.message||"Login Admin Utama gagal.");
       $("loginAdminPassword").select();
     }
     return;
   }
+
   const user=$("loginAdminUser").value.trim();
   if(!user){error.textContent="⚠️ Masukkan username Admin Kedua.";$("loginAdminUser").focus();return}
   const found=admins.find(a=>String(a.username).toLowerCase()===user.toLowerCase());
   if(!found){
     createAccessAlert("secondary");
     error.textContent="❌ Admin Kedua tidak ditemukan. Admin Utama harus menambahkannya terlebih dahulu.";
-    return
+    return;
   }
   if(pass===found.password){
     sessionRole="secondary";sessionUsername=found.username;closeAdminLogin();updateAdminPanel();renderNews();renderComments();$("menu").classList.remove("open");toast("🛡️ Admin Kedua aktif");
@@ -920,7 +1538,13 @@ function performAdminLogin(){
     $("loginAdminPassword").select();
   }
 }
-function logout(){sessionRole=null;sessionUsername=null;editingIndex=-1;clearForm();updateAdminPanel();renderNews();renderComments();toast("🔒 Keluar admin")}
+
+async function logout(){
+  const raw=localStorage.getItem("antiKritikSupabaseSession");
+  if(raw){try{const auth=JSON.parse(raw);if(auth.access_token){await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+auth.access_token}});}}catch(e){}}
+  localStorage.removeItem("antiKritikSupabaseSession");
+  sessionRole=null;sessionUsername=null;editingIndex=-1;clearForm();updateAdminPanel();renderNews();renderComments();toast("🔒 Keluar admin");
+}
 function normalizeBadWordInput(value){
   return String(value || "")
     .toLowerCase()
@@ -1101,9 +1725,15 @@ $("secondaryRoleBtn").onclick=()=>{
   loginRole="secondary";$("secondaryRoleBtn").classList.add("active");$("mainRoleBtn").classList.remove("active");$("secondaryUserField").style.display="block";$("adminLoginError").textContent="";setTimeout(()=>$("loginAdminUser").focus(),30);
 };
 $("adminLoginSubmit").onclick=performAdminLogin;
-["loginAdminUser","loginAdminPassword"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();performAdminLogin()}}));
+["loginAdminEmail","loginAdminUser","loginAdminPassword"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();performAdminLogin()}}));
 $("adminLoginModal").addEventListener("click",e=>{if(e.target===$("adminLoginModal"))closeAdminLogin()});
 $("adminBtn").onclick=login;$("lightBtn").onclick=()=>theme("light");$("darkBtn").onclick=()=>theme("dark");
+$("recommendBtn").onclick=()=>{
+  $("menu").classList.remove("open");
+  const target=$("headlineContent")||$("newsContainer");
+  target?.scrollIntoView({behavior:"smooth",block:"start"});
+  toast("💡 Rekomendasi berita ditampilkan");
+};
 $("refreshBtn").onclick=()=>{renderNews();renderTrending();$("menu").classList.remove("open");toast("🔄 Tampilan berita diperbarui")};
 $("saveBtn").onclick=saveNews;$("cancelEditBtn").onclick=clearForm;$("logoutBtn").onclick=logout;
 $("blockUserBtn").onclick=blockUser;
@@ -1177,8 +1807,504 @@ trend.addEventListener("wheel",e=>{
   if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();trend.scrollLeft+=e.deltaY}
 },{passive:false});
 
+
+/* =========================
+   V4 SUPER PORTAL ENGINE
+   ========================= */
+const PORTAL_STATS_KEY="antiKritikPortalStats_v1";
+const PORTAL_SAVED_KEY="antiKritikSaved_v1";
+const PORTAL_SITE_REACTIONS_KEY="antiKritikSiteReactions_v1";
+const PORTAL_COMMENT_LIKES_KEY="antiKritikCommentLikes_v1";
+
+let portalCategory="Semua";
+let portalSearch="";
+let portalSort="newest";
+let portalShowingSaved=false;
+let portalStats=loadJSON(PORTAL_STATS_KEY,{views:{},likes:{},saved:{},totalViews:0});
+let portalSaved=loadJSON(PORTAL_SAVED_KEY,[]);
+let portalSiteReactions=loadJSON(PORTAL_SITE_REACTIONS_KEY,{suka:0,lucu:0,keren:0,kaget:0});
+let portalCommentLikes=loadJSON(PORTAL_COMMENT_LIKES_KEY,[]);
+
+if(!portalStats || typeof portalStats!=="object") portalStats={views:{},likes:{},saved:{},totalViews:0};
+portalStats.views=portalStats.views||{};
+portalStats.likes=portalStats.likes||{};
+portalStats.saved=portalStats.saved||{};
+portalStats.totalViews=Number(portalStats.totalViews)||0;
+if(!Array.isArray(portalSaved))portalSaved=[];
+if(!portalSiteReactions || typeof portalSiteReactions!=="object")portalSiteReactions={suka:0,lucu:0,keren:0,kaget:0};
+if(!Array.isArray(portalCommentLikes))portalCommentLikes=[];
+
+function portalId(item,index){
+  const raw=String(item?.title||"")+"|"+String(item?.date||"")+"|"+String(item?.url||"")+"|"+index;
+  let h=2166136261;
+  for(let i=0;i<raw.length;i++){h^=raw.charCodeAt(i);h=Math.imul(h,16777619)}
+  return "n"+(h>>>0).toString(36);
+}
+function portalSave(){
+  localStorage.setItem(PORTAL_STATS_KEY,JSON.stringify(portalStats));
+  localStorage.setItem(PORTAL_SAVED_KEY,JSON.stringify(portalSaved));
+  localStorage.setItem(PORTAL_SITE_REACTIONS_KEY,JSON.stringify(portalSiteReactions));
+  localStorage.setItem(PORTAL_COMMENT_LIKES_KEY,JSON.stringify(portalCommentLikes));
+}
+function portalNumber(n){
+  return Number(n||0).toLocaleString("id-ID");
+}
+function portalItemData(item,index){
+  const id=portalId(item,index);
+  return {id,views:Number(portalStats.views[id]||0),likes:Number(portalStats.likes[id]||0),saved:portalSaved.includes(id)};
+}
+function portalDate(item){
+  const d=item?.date?new Date(item.date):new Date();
+  return Number.isNaN(d.getTime())?"Hari ini":d.toLocaleDateString("id-ID",{day:"2-digit",month:"long",year:"numeric"});
+}
+function portalTimeAgo(date){
+  const d=new Date(date),diff=Math.max(0,Date.now()-d.getTime()),m=Math.floor(diff/60000);
+  if(m<1)return "baru saja";
+  if(m<60)return m+" menit lalu";
+  const h=Math.floor(m/60);
+  if(h<24)return h+" jam lalu";
+  const day=Math.floor(h/24);
+  if(day<30)return day+" hari lalu";
+  return portalDate({date});
+}
+function portalFiltered(){
+  let list=news.map((n,i)=>({item:n,index:i,id:portalId(n,i)}));
+  if(portalShowingSaved)list=list.filter(x=>portalSaved.includes(x.id));
+  const q=portalSearch.trim().toLowerCase();
+  if(q)list=list.filter(x=>
+    String(x.item.title||"").toLowerCase().includes(q) ||
+    String(x.item.description||"").toLowerCase().includes(q) ||
+    String(x.item.category||"").toLowerCase().includes(q)
+  );
+  if(portalCategory!=="Semua")list=list.filter(x=>String(x.item.category||"")===portalCategory);
+  list.sort((a,b)=>{
+    if(portalSort==="oldest")return new Date(a.item.date)-new Date(b.item.date);
+    if(portalSort==="views")return (portalStats.views[b.id]||0)-(portalStats.views[a.id]||0);
+    if(portalSort==="likes")return (portalStats.likes[b.id]||0)-(portalStats.likes[a.id]||0);
+    return new Date(b.item.date)-new Date(a.item.date);
+  });
+  return list;
+}
+function portalOpenArticle(index){
+  const item=news[index];if(!item)return;
+  const id=portalId(item,index);
+  if(item.id){
+    fetch("https://calzhutobtwfcshkgixm.supabase.co/rest/v1/rpc/increment_news_view",{method:"POST",headers:{"apikey":"sb_publishable_ojg7L_JThZo1ExOKTe5U5Q_LsEY4jwC","Authorization":"Bearer sb_publishable_ojg7L_JThZo5U5Q_LsEY4jwC","Content-Type":"application/json"},body:JSON.stringify({p_news_id:Number(item.id)})}).catch(()=>{});
+    item.views=Number(item.views||0)+1;
+  }
+  portalStats.views[id]=(portalStats.views[id]||0)+1;
+  portalStats.totalViews++;
+  portalSave();
+  const modal=$("articleModal");
+  $("articleModalImage").src=item.image||fallbackImage;
+  $("articleModalImage").alt=item.title||"";
+  $("articleModalCategory").textContent=item.category||"Berita";
+  $("articleModalTitle").textContent=item.title||"Tanpa judul";
+  $("articleModalDescription").textContent=item.description||"";
+  const story=item.story||"";
+  const storyBox=$("articleModalStory"), storyLabel=$("articleModalStoryLabel");
+  if(story){
+    storyLabel.style.display="block";
+    storyBox.style.display="block";
+    storyBox.innerHTML=story.split(/\n\n+/).map(p=>`<p>${esc(p)}</p>`).join("");
+  }else{
+    storyLabel.style.display="none";
+    storyBox.style.display="none";
+    storyBox.innerHTML="";
+  }
+  $("articleModalMeta").innerHTML=`🕒 ${esc(portalDate(item))} · 👁️ ${portalNumber(portalStats.views[id])} pembacaan · ❤️ ${portalNumber(portalStats.likes[id]||0)}`;
+  $("articleShareBtn").dataset.articleIndex=index;
+  $("articleSaveBtn").dataset.articleIndex=index;
+  $("articleSourceBtn").dataset.articleIndex=index;
+  $("articleSaveBtn").textContent=portalSaved.includes(id)?"🔖 Tersimpan":"🔖 Simpan";
+  const related=news.map((n,i)=>({n,i})).filter(x=>x.i!==index && x.n.category===item.category).slice(0,3);
+  const extra=related.length?related:news.map((n,i)=>({n,i})).filter(x=>x.i!==index).slice(0,3);
+  $("articleRelated").innerHTML=extra.map(x=>`
+    <div class="related-card" data-related="${x.i}">
+      <img src="${esc(x.n.image||fallbackImage)}" alt="${esc(x.n.title)}">
+      <div>${esc(x.n.title)}</div>
+    </div>`).join("") || '<div class="small">Belum ada berita terkait.</div>';
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+  renderPortalStats();
+  renderNews();
+}
+function portalCloseArticle(){
+  $("articleModal").classList.remove("show");
+  $("articleModal").setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+function portalToggleSave(index){
+  const id=portalId(news[index],index);
+  const p=portalSaved.indexOf(id);
+  if(p>=0){portalSaved.splice(p,1);toast("🔖 Berita dihapus dari tersimpan")}
+  else{portalSaved.push(id);toast("🔖 Berita disimpan")}
+  portalSave();renderNews();renderPortalStats();
+}
+function portalLike(index){
+  const item=news[index];
+  const id=portalId(item,index);
+  if(item && item.id){
+    fetch("https://calzhutobtwfcshkgixm.supabase.co/rest/v1/rpc/toggle_news_like",{method:"POST",headers:{"apikey":"sb_publishable_ojg7L_JThZo5U5Q_LsEY4jwC","Authorization":"Bearer sb_publishable_ojg7L_JThZo5U5Q_LsEY4jwC","Content-Type":"application/json"},body:JSON.stringify({p_news_id:Number(item.id)})})
+      .then(r=>r.ok?r.json():null).then(v=>{if(v!==null){item.likes=Number(v||0);renderNews();renderPortalStats();toast("❤️ Like tersimpan di Supabase");}}).catch(()=>toast("⚠️ Like gagal disimpan"));
+    return;
+  }
+  portalStats.likes[id]=(portalStats.likes[id]||0)+1;
+  portalSave();renderNews();renderPortalStats();
+  toast("❤️ Reaksi disimpan");
+}
+function renderPortalHeadline(){
+  const box=$("headlineContent");if(!box)return;
+  const list=news.map((n,i)=>({n,i})).sort((a,b)=>(portalStats.views[portalId(b.n,b.i)]||0)-(portalStats.views[portalId(a.n,a.i)]||0));
+  const top=list[0]||null;
+  if(!top){box.innerHTML='<div class="empty">Belum ada berita.</div>';return}
+  const side=list.slice(1,4);
+  box.innerHTML=`
+    <div class="headline-grid">
+      <div class="headline-main" data-headline="${top.i}">
+        <img src="${esc(top.n.image||fallbackImage)}" alt="${esc(top.n.title)}">
+        <div class="headline-overlay">
+          <span class="badge hot">${esc(top.n.category||"Berita")}</span>
+          <h2>${esc(top.n.title)}</h2>
+          <p>${esc(top.n.description||"")}</p>
+          <div class="news-actions"><button class="news-action" data-headline-open="${top.i}">📖 Baca berita</button></div>
+        </div>
+      </div>
+      <div class="headline-side">
+        ${side.map(x=>`
+          <div class="mini-headline" data-headline-open="${x.i}">
+            <img src="${esc(x.n.image||fallbackImage)}" alt="${esc(x.n.title)}">
+            <div><small>${esc(x.n.category||"Berita")} · 👁️ ${portalNumber(portalStats.views[portalId(x.n,x.i)]||0)}</small><h3>${esc(x.n.title)}</h3></div>
+          </div>`).join("")}
+      </div>
+    </div>`;
+}
+function renderBreaking(){
+  const latest=[...news].sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+  $("breakingText").textContent=latest?latest.title:"Belum ada berita terbaru.";
+}
+function renderPortalStats(){
+  const totalViews=Object.values(portalStats.views).reduce((a,b)=>a+Number(b||0),0);
+  const savedCount=portalSaved.length;
+  if($("statNews"))$("statNews").textContent=portalNumber(news.length);
+  if($("statViews"))$("statViews").textContent=portalNumber(totalViews);
+  if($("statComments"))$("statComments").textContent=portalNumber(comments.length);
+  if($("statSaved"))$("statSaved").textContent=portalNumber(savedCount);
+  if($("adminStatNews"))$("adminStatNews").textContent=portalNumber(news.length);
+  if($("adminStatComments"))$("adminStatComments").textContent=portalNumber(comments.length);
+  if($("adminStatViews"))$("adminStatViews").textContent=portalNumber(totalViews);
+  if($("adminStatBlocks"))$("adminStatBlocks").textContent=portalNumber(blocks.length);
+}
+function renderSiteReactions(){
+  document.querySelectorAll("[data-site-reaction]").forEach(btn=>{
+    const k=btn.dataset.siteReaction;
+    btn.querySelector("span").textContent=portalNumber(portalSiteReactions[k]||0);
+  });
+}
+function portalReaction(k){
+  const mine=localStorage.getItem("antiKritikMySiteReaction");
+  if(mine===k){toast("Kamu sudah memberi reaksi ini.");return}
+  portalSiteReactions[k]=(portalSiteReactions[k]||0)+1;
+  localStorage.setItem("antiKritikMySiteReaction",k);
+  portalSave();renderSiteReactions();toast("👍 Reaksi diterima");
+}
+function renderPortalResultInfo(count){
+  const total=news.length;
+  $("resultInfo").textContent=portalShowingSaved
+    ? `Menampilkan ${count} berita tersimpan dari ${total}.`
+    : `Menampilkan ${count} dari ${total} berita.`;
+}
+
+/* Override the old local renderer with the portal renderer. */
+function renderNews(){
+  const box=$("newsContainer");if(!box)return;
+  const list=portalFiltered();
+  renderPortalResultInfo(list.length);
+  if(!list.length){box.innerHTML='<div class="empty">Tidak ada berita yang cocok. Coba kata kunci lain, karena mesin pencari belum bisa membaca pikiran.</div>';renderPortalHeadline();renderBreaking();renderPortalStats();return}
+  box.innerHTML=list.map(x=>{
+    const n=x.item,i=x.index,d=portalItemData(n,i);
+    const cls=n.category==="Trending"?"badge hot":n.category==="Lucu"?"badge lucu":"badge";
+    return `<article class="card reveal">
+      <a class="image-link" href="${esc(safeURL(n.url)||"#")}" ${safeURL(n.url)?'target="_blank" rel="noopener noreferrer"':`onclick="return false;"`} aria-label="Buka sumber ${esc(n.title)}">
+        <img src="${esc(n.image||fallbackImage)}" alt="${esc(n.title)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${fallbackImage}'">
+      </a>
+      <div class="card-body">
+        <span class="${cls}">${esc(n.category||"Berita")}</span>
+        <h3 data-open-article="${i}">${esc(n.title)}</h3>
+        <p>${esc(n.description||"")}</p>
+        <div class="date">🕒 ${esc(portalDate(n))}</div>
+        <div class="card-meta">👁️ ${portalNumber(d.views)} dibaca · ❤️ ${portalNumber(d.likes)} suka · ${portalTimeAgo(n.date)}</div>
+        <div class="news-actions">
+          <button class="news-action" data-open-article="${i}">📖 Baca</button>
+          <button class="news-action" data-like-news="${i}">❤️ Suka</button>
+          <button class="news-action ${d.saved?"saved-active":""}" data-save-news="${i}">${d.saved?"🔖 Tersimpan":"🔖 Simpan"}</button>
+          <button class="news-action" data-share-news="${i}">🔗 Bagikan</button>
+        </div>
+        ${sessionRole?`<div class="admin-actions">
+          <button class="btn edit" data-edit="${i}">✏️ Edit</button>
+          ${sessionRole==="main"?`<button class="btn del" data-delete="${i}">🗑️ Hapus</button>`:""}
+        </div>`:""}
+      </div>
+    </article>`;
+  }).join("");
+  setupReveal();renderPortalHeadline();renderBreaking();renderPortalStats();
+}
+function renderComments(){
+  const box=$("commentList");if(!box)return;
+  if(!comments.length){box.innerHTML='<div class="empty">Belum ada komentar. Jadilah pembaca pertama.</div>';renderPortalStats();return}
+  box.innerHTML=comments.slice().reverse().map((c,reverseIndex)=>{
+    const originalIndex=comments.length-1-reverseIndex;
+    const admin=c.role==="main"||c.role==="secondary";
+    const liked=portalCommentLikes.includes(originalIndex);
+    const likes=Number(c.likes||0);
+    return `<article class="comment reveal">
+      <div class="comment-head"><span class="comment-user">${esc(c.username)}</span>
+      ${admin?'<span class="admin-label">★ ADMIN</span>':""}
+      <span class="comment-time">${esc(new Date(c.date).toLocaleString("id-ID"))}</span></div>
+      <p class="comment-text">${esc(c.text)}</p>
+      <div class="comment-tools">
+        <button class="comment-like ${liked?"active":""}" data-comment-like="${originalIndex}">👍 ${portalNumber(likes)}</button>
+        ${(sessionRole==="main"||sessionUsername===c.username)?`<button data-comment-delete="${originalIndex}">Hapus komentar</button>`:""}
+      </div>
+    </article>`;
+  }).join("");
+  setupReveal();renderPortalStats();
+}
+
+/* Search, filter, sorting */
+$("portalSearch").addEventListener("input",e=>{portalSearch=e.target.value;portalShowingSaved=false;renderNews()});
+$("portalSort").addEventListener("change",e=>{portalSort=e.target.value;renderNews()});
+$("clearPortalSearch").onclick=()=>{
+  portalSearch="";portalCategory="Semua";portalShowingSaved=false;
+  $("portalSearch").value="";$("portalSort").value="newest";
+  document.querySelectorAll(".portal-filter").forEach(b=>b.classList.toggle("active",b.dataset.category==="Semua"));
+  renderNews();
+};
+$("portalFilters").addEventListener("click",e=>{
+  const b=e.target.closest("[data-category]");if(!b)return;
+  portalCategory=b.dataset.category;portalShowingSaved=false;
+  document.querySelectorAll(".portal-filter").forEach(x=>x.classList.toggle("active",x===b));
+  renderNews();
+});
+$("showSavedBtn").onclick=()=>{portalShowingSaved=true;portalSearch="";portalCategory="Semua";$("portalSearch").value="";renderNews();scrollTo({top:$("newsContainer").offsetTop-90,behavior:"smooth"})};
+$("showAllBtn").onclick=()=>{$("clearPortalSearch").click()};
+$("headlineContent").onclick=e=>{
+  const b=e.target.closest("[data-headline-open]");if(b)portalOpenArticle(Number(b.dataset.headlineOpen));
+};
+$("newsContainer").addEventListener("click",e=>{
+  const open=e.target.closest("[data-open-article]");
+  const like=e.target.closest("[data-like-news]");
+  const save=e.target.closest("[data-save-news]");
+  const share=e.target.closest("[data-share-news]");
+  const ed=e.target.closest("[data-edit]");
+  const del=e.target.closest("[data-delete]");
+  if(open){e.preventDefault();portalOpenArticle(Number(open.dataset.openArticle));return}
+  if(like){e.preventDefault();portalLike(Number(like.dataset.likeNews));return}
+  if(save){e.preventDefault();portalToggleSave(Number(save.dataset.saveNews));return}
+  if(share){e.preventDefault();portalShare(Number(share.dataset.shareNews));return}
+  if(ed)editNews(Number(ed.dataset.edit));
+  if(del)deleteNews(Number(del.dataset.delete));
+});
+$("articleClose").onclick=portalCloseArticle;
+$("articleModal").addEventListener("click",e=>{if(e.target===$("articleModal"))portalCloseArticle()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")portalCloseArticle()});
+$("articleRelated").addEventListener("click",e=>{
+  const b=e.target.closest("[data-related]");if(b)portalOpenArticle(Number(b.dataset.related));
+});
+function portalShare(index){
+  const n=news[index];if(!n)return;
+  const url=safeURL(n.url)||location.href;
+  const data={title:n.title,text:n.description||"Berita dari Website Berita Anti Kritik",url};
+  if(navigator.share){navigator.share(data).catch(()=>{})}
+  else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>toast("🔗 Tautan disalin"))}
+  else toast("🔗 Bagikan lewat menu browser");
+}
+$("articleShareBtn").onclick=()=>portalShare(Number($("articleShareBtn").dataset.articleIndex));
+$("articleSaveBtn").onclick=()=>portalToggleSave(Number($("articleSaveBtn").dataset.articleIndex));
+$("articleSourceBtn").onclick=()=>{
+  const n=news[Number($("articleSourceBtn").dataset.articleIndex)];
+  const u=safeURL(n?.url);if(u)window.open(u,"_blank","noopener,noreferrer");else toast("🌐 Sumber belum tersedia");
+};
+$("siteReactions").addEventListener("click",e=>{
+  const b=e.target.closest("[data-site-reaction]");if(b)portalReaction(b.dataset.siteReaction);
+});
+$("commentList").addEventListener("click",e=>{
+  const like=e.target.closest("[data-comment-like]");
+  if(like){
+    const i=Number(like.dataset.commentLike);
+    if(portalCommentLikes.includes(i)){toast("Kamu sudah menyukai komentar ini.");return}
+    portalCommentLikes.push(i);
+    comments[i].likes=Number(comments[i].likes||0)+1;
+    portalSave();persist();renderComments();
+    return;
+  }
+  const del=e.target.closest("[data-comment-delete]");
+  if(del){
+    const i=Number(del.dataset.commentDelete);comments.splice(i,1);
+    portalCommentLikes=portalCommentLikes.filter(x=>x!==i).map(x=>x>i?x-1:x);
+    portalSave();persist();renderComments();toast("🗑️ Komentar dihapus");
+  }
+});
+
+/* Admin backup / restore */
+$("exportDataBtn").onclick=()=>{
+  if(sessionRole!=="main"){toast("🔒 Hanya Admin Utama.");return}
+  const data={version:4,exportedAt:new Date().toISOString(),news,comments,admins,blocks,accessAlerts,mainPassword,portalStats,portalSaved,portalSiteReactions};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="backup-website-berita.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast("💾 Backup berhasil dibuat");
+};
+$("importDataBtn").onclick=()=>{if(sessionRole==="main")$("backupFile").click();else toast("🔒 Hanya Admin Utama.")};
+$("backupFile").addEventListener("change",async e=>{
+  const file=e.target.files?.[0];if(!file)return;
+  try{
+    const data=JSON.parse(await file.text());
+    if(!Array.isArray(data.news)||!Array.isArray(data.comments))throw new Error("Format backup tidak valid");
+    news=data.news;comments=data.comments;admins=Array.isArray(data.admins)?data.admins:admins;
+    blocks=Array.isArray(data.blocks)?data.blocks:blocks;accessAlerts=Array.isArray(data.accessAlerts)?data.accessAlerts:accessAlerts;
+    if(typeof data.mainPassword==="string")mainPassword=data.mainPassword;
+    if(data.portalStats)portalStats=data.portalStats;
+    if(Array.isArray(data.portalSaved))portalSaved=data.portalSaved;
+    if(data.portalSiteReactions)portalSiteReactions=data.portalSiteReactions;
+    persist();portalSave();renderAdmins();renderBlocks();renderAccessAlerts();renderNews();renderComments();toast("⬆️ Backup berhasil dipulihkan");
+  }catch(err){toast("❌ Backup gagal: "+err.message)}
+  e.target.value="";
+});
+
+/* Keep admin stats fresh after existing admin actions. */
+const oldPersist=persist;
+persist=function(){oldPersist();portalSave();renderPortalStats()};
+
+renderSiteReactions();
+renderPortalStats();
+renderNews();
+renderComments();
+
+(async function restoreSupabaseAdminSession(){
+  try{
+    const raw=localStorage.getItem("antiKritikSupabaseSession");
+    if(!raw)return;
+    const auth=JSON.parse(raw);
+    if(!auth.access_token||!auth.user?.id)return;
+    const admin=await getSupabaseAdmin(auth.access_token,auth.user.id);
+    if(admin && admin.role==="admin_utama"){sessionRole="main";sessionUsername=admin.username||"Admin Utama";updateAdminPanel();}
+    else localStorage.removeItem("antiKritikSupabaseSession");
+  }catch(e){localStorage.removeItem("antiKritikSupabaseSession");}
+})();
 initTheme();persist();renderTrending();renderNews();renderComments();setupReveal();ageGate();lockUsernameUI();
 
+})();
+</script>
+
+<script id="supabase-cloud-script">
+(function(){
+  const SUPABASE_URL="https://calzhutobtwfcshkgixm.supabase.co";
+  const SUPABASE_KEY="sb_publishable_ojg7L_JThZo1ExOKTe5U5Q_LsEY4jwC";
+  const REST=SUPABASE_URL+"/rest/v1";
+  const headers={
+    "apikey":SUPABASE_KEY,
+    "Authorization":"Bearer "+SUPABASE_KEY,
+    "Content-Type":"application/json"
+  };
+
+  async function api(path, options={}){
+    const r=await fetch(REST+path,{...options,headers:{...headers,...(options.headers||{})}});
+    if(!r.ok) throw new Error(await r.text());
+    return r.status===204?null:r.json();
+  }
+
+  function cloudNewsToLocal(rows){
+    return (rows||[]).map(n=>({
+      id:n.id,
+      title:n.title,
+      category:n.category||"Berita",
+      image:n.image_url||fallbackImage,
+      url:n.target_url||"",
+      description:n.content||"",
+      date:n.published_at||n.created_at||new Date().toISOString(),
+      author:n.author||"YonzZ",
+      views:Number(n.views||0),
+      likes:Number(n.likes||0),
+      featured:!!n.is_featured,
+      breaking:!!n.is_breaking
+    }));
+  }
+
+  async function loadCloudNews(){
+    try{
+      const rows=await api('/news?select=id,title,content,image_url,target_url,author,created_at,category,views,likes,is_featured,is_breaking,published_at&order=published_at.desc.nullslast,created_at.desc');
+      const cloud=cloudNewsToLocal(rows);
+      if(cloud.length){
+        news=cloud;
+        renderNews();
+        renderTrending();
+        toast("☁️ Berita dari Supabase berhasil dimuat");
+      }
+    }catch(e){
+      console.warn("Supabase news gagal dimuat:",e);
+      toast("⚠️ Supabase belum bisa dimuat. Berita lokal tetap digunakan.");
+    }
+  }
+
+  async function loadCloudComments(){
+    try{
+      const rows=await api('/comments?select=id,username,content,created_at&order=created_at.asc');
+      comments=(rows||[]).map(c=>({
+        id:c.id,
+        username:c.username,
+        text:c.content,
+        date:c.created_at||new Date().toISOString(),
+        role:"member"
+      }));
+      renderComments();
+      renderPortalStats();
+    }catch(e){
+      console.warn("Supabase comments gagal dimuat:",e);
+    }
+  }
+
+  async function cloudSubmitComment(){
+    const username=$("commentUsername")?.value.trim();
+    const text=$("commentText")?.value.trim();
+    if(!username||!validUsername(username)){
+      toast("⚠️ Terapkan username yang valid terlebih dahulu"); return;
+    }
+    if(!text||text.length>500){toast("⚠️ Komentar harus 1-500 karakter");return;}
+    if(!validWord(text)){toast("⚠️ Komentar mengandung kata kasar/vulgar");return;}
+    try{
+      const rows=await api('/comments',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({username,content:maskBad(text)})});
+      const c=rows&&rows[0];
+      if(c) comments.push({id:c.id,username:c.username,text:c.content,date:c.created_at,role:"member"});
+      $("commentText").value="";
+      renderComments();renderPortalStats();
+      toast("☁️ Komentar tersimpan di Supabase");
+    }catch(e){
+      console.error(e);
+      toast("❌ Komentar gagal disimpan ke Supabase");
+    }
+  }
+
+  async function cloudView(newsId){
+    if(!newsId)return;
+    try{
+      await api('/rpc/increment_news_view',{method:'POST',body:JSON.stringify({p_news_id:Number(newsId)})});
+    }catch(e){console.warn("view RPC gagal",e)}
+  }
+
+  async function cloudLike(newsId){
+    if(!newsId)return null;
+    try{
+      const rows=await api('/rpc/toggle_news_like',{method:'POST',body:JSON.stringify({p_news_id:Number(newsId)})});
+      return Number(rows||0);
+    }catch(e){console.warn("like RPC gagal",e);return null}
+	    }
+
+  // Replace local comment submission with cloud submission.
+  $("commentBtn").onclick=cloudSubmitComment;
+
+  // Initial cloud hydration after the page has rendered.
+  setTimeout(()=>{loadCloudNews();loadCloudComments();},150);
 })();
 </script>
 
@@ -1190,6 +2316,7 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
 
       const wrap = document.createElement("span");
       wrap.className = "password-wrap";
+
       input.parentNode.insertBefore(wrap, input);
       wrap.appendChild(input);
 
@@ -1200,12 +2327,22 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
       btn.setAttribute("title","Tampilkan password");
       btn.textContent = "👁️";
 
-      btn.addEventListener("click", function(){
-        const visible = input.type === "text";
-        input.type = visible ? "password" : "text";
-        btn.textContent = visible ? "👁️" : "🙈";
-        btn.setAttribute("aria-label", visible ? "Tampilkan password" : "Sembunyikan password");
-        btn.setAttribute("title", visible ? "Tampilkan password" : "Sembunyikan password");
+      btn.addEventListener("click", function(e){
+        e.preventDefault();
+        e.stopPropagation();
+
+        const showing = input.type === "text";
+        input.type = showing ? "password" : "text";
+
+        btn.textContent = showing ? "👁️" : "🙈";
+        btn.setAttribute(
+          "aria-label",
+          showing ? "Tampilkan password" : "Sembunyikan password"
+        );
+        btn.setAttribute(
+          "title",
+          showing ? "Tampilkan password" : "Sembunyikan password"
+        );
       });
 
       wrap.appendChild(btn);
@@ -1218,6 +2355,128 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
   new MutationObserver(addPasswordEyes).observe(document.documentElement,{
     childList:true,
     subtree:true
+  });
+})();
+</script>
+
+
+<section id="v7AdminTools" class="v7-admin-box" style="display:none">
+  <h3>🛠️ Admin News Tools</h3>
+  <div class="v7-tools">
+    <button type="button" id="v7RefreshStats">📊 Perbarui Statistik</button>
+    <button type="button" id="v7LoadTrending">🔥 Tampilkan Terpopuler</button>
+  </div>
+  <div>
+    <label for="v7ImageFile">🖼️ Gambar berita (JPG/JPEG)</label><br>
+    <input id="v7ImageFile" type="file" accept=".jpg,.jpeg,image/jpeg">
+    <img id="v7ImagePreview" class="v7-preview" alt="Preview gambar berita"><div id="v7UploadUrl" class="v7-muted" style="margin-top:6px"></div>
+  </div>
+  <p class="v7-muted">Upload gambar memerlukan Supabase Storage bucket dan policy yang sesuai. File tidak akan diunggah otomatis tanpa bucket/policy tersebut.</p>
+</section>
+<script id="v7-extra-script">
+(function(){
+  const file = document.getElementById('v7ImageFile');
+  const preview = document.getElementById('v7ImagePreview');
+  if(file && preview){
+    file.addEventListener('change', async function(){
+      const f = this.files && this.files[0];
+      if(!f) return;
+      if(f.type !== 'image/jpeg'){
+        alert('Pilih file JPG/JPEG.');
+        this.value='';
+        preview.style.display='none';
+        return;
+      }
+
+      const localUrl = URL.createObjectURL(f);
+      preview.src = localUrl;
+      preview.style.display='block';
+
+      // Upload only when a Supabase Auth session is available.
+      // The existing page is expected to expose its Supabase client as
+      // window.supabaseClient (or window.supabase). If not, keep the preview
+      // working and show a clear message rather than silently failing.
+      try{
+        const sb = window.supabaseClient || window.supabase;
+        if(!sb || typeof sb.storage?.from !== 'function'){
+          console.warn('Supabase client is not exposed on window.');
+          return;
+        }
+
+        const { data: sessionData } = await sb.auth.getSession();
+        const session = sessionData?.session;
+        if(!session){
+          alert('Silakan login sebagai Admin terlebih dahulu.');
+          return;
+        }
+
+        const safeName = f.name.toLowerCase().replace(/[^a-z0-9._-]/g,'_');
+        const path = 'news/' + Date.now() + '_' + safeName;
+
+        const { error: uploadError } = await sb.storage
+          .from('news-images')
+          .upload(path, f, {
+            contentType: 'image/jpeg',
+            upsert: false
+          });
+
+        if(uploadError) throw uploadError;
+
+        const { data: publicData } = sb.storage
+          .from('news-images')
+          .getPublicUrl(path);
+
+        window.YonzZV7 = window.YonzZV7 || {};
+        window.YonzZV7.lastUploadedImageUrl = publicData.publicUrl;
+        window.YonzZV7.lastUploadedImagePath = path;
+        const urlBox = document.getElementById('v7UploadUrl');
+        if(urlBox) urlBox.textContent = 'URL gambar siap digunakan di berita.';
+
+        alert('JPG berhasil di-upload ke Supabase Storage.');
+      }catch(err){
+        console.error(err);
+        alert('Upload JPG gagal: ' + (err?.message || 'error tidak diketahui'));
+      }
+    });
+  }
+
+  // Add the exact requested menu label next to dark mode if the original menu exists.
+  const candidates = Array.from(document.querySelectorAll('button,a,div,span')).filter(el=>{
+    return (el.textContent||'').trim() === '🌙 Mode Gelap';
+  });
+  candidates.forEach(el=>{
+    if(!el.textContent.includes('(Rekomendasi)')) el.textContent += '(Rekomendasi)';
+  });
+
+  // Expose a tiny helper for future admin CRUD integration.
+  window.YonzZV7 = {
+    validateJpg(file){
+      return !!file && file.type === 'image/jpeg';
+    }
+  };
+})();
+</script>
+
+
+<script id="v7-visible-jpg-script">
+(function(){
+  const input=document.getElementById("v7NewsImageFile");
+  const preview=document.getElementById("v7NewsImagePreview");
+  const status=document.getElementById("v7NewsImageStatus");
+  if(!input) return;
+  input.addEventListener("change",function(){
+    const f=input.files && input.files[0];
+    if(!f){ status.textContent="Belum memilih gambar."; preview.style.display="none"; return; }
+    if(f.type!=="image/jpeg"){
+      input.value="";
+      status.textContent="❌ Pilih file JPG/JPEG.";
+      preview.style.display="none";
+      return;
+    }
+    const url=URL.createObjectURL(f);
+    preview.src=url;
+    preview.style.display="block";
+    status.textContent="📁 "+f.name+" siap di-upload saat berita disimpan.";
   });
 })();
 </script>
