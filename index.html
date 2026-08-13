@@ -604,6 +604,11 @@ body.dark .comment-like.active{background:#172554;color:#bfdbfe}
 
 
 .story-label{margin:14px 0 8px;font-size:.78rem;font-weight:800;letter-spacing:.08em;opacity:.75}.article-story{line-height:1.8;font-size:1rem}.article-story p{margin:0 0 14px}.article-story p:last-child{margin-bottom:0}
+
+/* V7 stability guard: content remains visible even if reveal JS is interrupted. */
+.reveal{opacity:1;transform:none}
+.reveal.visible{opacity:1;transform:none}
+
 </style>
 
 <meta name="description" content="Website Berita Anti Kritik: berita terbaru, trending, lucu, menarik, komentar pembaca, pencarian, dan berita terpopuler.">
@@ -624,8 +629,32 @@ body.dark .comment-like.active{background:#172554;color:#bfdbfe}
 .v7-muted{opacity:.7}
 </style>
 
-<meta name="comment-sync-fix" content="public Data API publishable key + no-store + verified insert">
-<meta name="comment-sync-final" content="Supabase Data API public profile + verified write/read">
+
+<style id="v7-jpg-design">
+.v7-jpg-picker{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 17px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.14);
+  background:linear-gradient(135deg,#111827,#374151);
+  color:#fff;
+  font-weight:700;
+  letter-spacing:.1px;
+  cursor:pointer;
+  box-shadow:0 7px 18px rgba(0,0,0,.14);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;
+  overflow:hidden;
+}
+.v7-jpg-picker:hover{transform:translateY(-1px);box-shadow:0 9px 22px rgba(0,0,0,.18);filter:brightness(1.06)}
+.v7-jpg-picker:active{transform:translateY(0) scale(.98)}
+.v7-jpg-picker .v7-camera{font-size:1.15em}
+.v7-jpg-picker input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.v7-jpg-name{margin-top:7px;font-size:.86em;opacity:.72}
+</style>
+
 </head>
 
 <body>
@@ -667,6 +696,23 @@ body.dark .comment-like.active{background:#172554;color:#bfdbfe}
   </div>
 </div>
 
+<script id="standalone-agegate-fix">
+(function(){
+"use strict";
+function initAgeGateFallback(){
+const day=document.getElementById("birthDay"),month=document.getElementById("birthMonth"),year=document.getElementById("birthYear"),gate=document.getElementById("ageGate"),blocked=document.getElementById("blocked"),enter=document.getElementById("enterSite"),leave=document.getElementById("leaveSite"),confirmBox=document.getElementById("ageConfirm");
+if(!day||!month||!year||!gate||!blocked||!enter||!leave||!confirmBox)return;
+if(!day.options.length){for(let i=1;i<=31;i++){const o=document.createElement("option");o.value=String(i).padStart(2,"0");o.textContent=String(i);day.appendChild(o)}}
+if(!month.options.length){["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"].forEach((name,i)=>{const o=document.createElement("option");o.value=String(i+1).padStart(2,"0");o.textContent=name;month.appendChild(o)})}
+if(!year.options.length){const current=new Date().getFullYear();for(let y=current;y>=1900;y--){const o=document.createElement("option");o.value=String(y);o.textContent=String(y);year.appendChild(o)}}
+if(!day.value)day.value="01";if(!month.value)month.value="01";if(!year.value)year.value=String(new Date().getFullYear()-18);
+if(localStorage.getItem("antiKritikAgeGate_v3")==="verified"){gate.style.display="none";return}
+enter.onclick=function(){if(!confirmBox.checked){const t=document.getElementById("toast");if(t){t.textContent="⚠️ Centang konfirmasi terlebih dahulu";t.classList.add("show")}return}const d=Number(day.value),m=Number(month.value),y=Number(year.value),test=new Date(y,m-1,d);if(test.getFullYear()!==y||test.getMonth()!==m-1||test.getDate()!==d)return;const now=new Date();let age=now.getFullYear()-y;if(now.getMonth()<m-1||(now.getMonth()===m-1&&now.getDate()<d))age--;if(age<18){gate.style.display="none";blocked.classList.add("show");return}localStorage.setItem("antiKritikAgeGate_v3","verified");gate.style.display="none"};
+leave.onclick=function(){gate.style.display="none";blocked.classList.add("show")};
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAgeGateFallback,{once:true});else initAgeGateFallback();
+})();
+</script>
 <div class="blocked" id="blocked">
   <div class="blocked-box">
     <h2>Akses ditolak</h2>
@@ -683,7 +729,6 @@ body.dark .comment-like.active{background:#172554;color:#bfdbfe}
         <button type="button" id="adminBtn">🔐 Masuk sebagai Admin</button>
         <button type="button" id="lightBtn">☀️ Mode Terang</button>
         <button type="button" id="darkBtn">🌙 Mode Gelap(Rekomendasi)</button>
-        <button type="button" id="recommendBtn"></button>
         <button type="button" id="refreshBtn">🔄 Refresh Berita</button>
       </div>
     </div>
@@ -781,9 +826,13 @@ body.dark .comment-like.active{background:#172554;color:#bfdbfe}
       </select>
       <div class="v7-image-upload-box" style="margin:10px 0;padding:12px;border:1px solid #ddd;border-radius:10px">
         <label for="v7NewsImageFile" style="display:block;font-weight:700;margin-bottom:6px">🖼️ Gambar Berita (JPG/JPEG)</label>
-        <input id="v7NewsImageFile" type="file" accept=".jpg,.jpeg,image/jpeg" style="width:100%">
-        <div id="v7NewsImageStatus" class="small" style="margin-top:6px">Belum memilih gambar.</div>
-        <img id="v7NewsImagePreview" class="v7-preview" alt="Preview gambar berita" style="display:none;max-width:220px;max-height:140px;object-fit:cover;border-radius:10px;margin-top:8px">
+        <label class="v7-jpg-picker" title="Pilih gambar JPG/JPEG">
+          <span class="v7-camera">📷</span>
+          <span>Pilih Foto Berita</span>
+          <input id="v7NewsImageFile" type="file" accept=".jpg,.jpeg,image/jpeg">
+        </label>
+        <div id="v7NewsImageStatus" class="v7-jpg-name">Belum memilih gambar.</div>
+        <img id="v7NewsImagePreview" class="v7-preview" alt="Preview gambar berita" style="display:none;max-width:220px;max-height:140px;object-fit:cover;border-radius:18px;margin-top:10px;box-shadow:0 8px 20px rgba(0,0,0,.14)">
       </div>
       <input id="image" type="url" placeholder="Atau URL gambar (https://...)">
       <input id="url" type="url" placeholder="URL saat gambar diklik (https://...)">
@@ -1700,7 +1749,7 @@ $("adminLoginSubmit").onclick=performAdminLogin;
 ["loginAdminEmail","loginAdminUser","loginAdminPassword"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();performAdminLogin()}}));
 $("adminLoginModal").addEventListener("click",e=>{if(e.target===$("adminLoginModal"))closeAdminLogin()});
 $("adminBtn").onclick=login;$("lightBtn").onclick=()=>theme("light");$("darkBtn").onclick=()=>theme("dark");
-$("recommendBtn").onclick=()=>{
+if($("recommendBtn")) $("recommendBtn").onclick=()=>{
   $("menu").classList.remove("open");
   const target=$("headlineContent")||$("newsContainer");
   target?.scrollIntoView({behavior:"smooth",block:"start"});
@@ -2174,33 +2223,15 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
   const SUPABASE_URL="https://calzhutobtwfcshkgixm.supabase.co";
   const SUPABASE_KEY="sb_publishable_ojg7L_JThZo1ExOKTe5U5Q_LsEY4jwC";
   const REST=SUPABASE_URL+"/rest/v1";
-  // Public Data API requests use the publishable key as `apikey`.
-  // Do not send the publishable key as a fake Bearer JWT.
   const headers={
     "apikey":SUPABASE_KEY,
-    "Accept-Profile":"public",
+    "Authorization":"Bearer "+SUPABASE_KEY,
     "Content-Type":"application/json"
   };
 
   async function api(path, options={}){
-    const opts={...options};
-    const extra={...(options.headers||{})};
-    delete opts.headers;
-    const r=await fetch(REST+path,{
-      ...opts,
-      cache:"no-store",
-      headers:{...headers,...extra}
-    });
-    if(!r.ok){
-      let msg="Supabase request gagal ("+r.status+")";
-      try{
-        const body=await r.json();
-        msg=body.message||body.error_description||body.error||msg;
-      }catch(e){
-        try{ const text=await r.text(); if(text) msg=text; }catch(_){}
-      }
-      throw new Error(msg);
-    }
+    const r=await fetch(REST+path,{...options,headers:{...headers,...(options.headers||{})}});
+    if(!r.ok) throw new Error(await r.text());
     return r.status===204?null:r.json();
   }
 
@@ -2239,7 +2270,7 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
 
   async function loadCloudComments(){
     try{
-      const rows=await api('/comments?select=id,username,content,created_at&order=created_at.asc',{headers:{'Accept-Profile':'public'}});
+      const rows=await api('/comments?select=id,username,content,created_at&order=created_at.asc');
       comments=(rows||[]).map(c=>({
         id:c.id,
         username:c.username,
@@ -2262,45 +2293,16 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
     }
     if(!text||text.length>500){toast("⚠️ Komentar harus 1-500 karakter");return;}
     if(!validWord(text)){toast("⚠️ Komentar mengandung kata kasar/vulgar");return;}
-
-    const send=$("commentBtn");
-    if(send) send.disabled=true;
-    const payload={username,content:maskBad(text)};
-
     try{
-      const rows=await api('/comments',{
-        method:'POST',
-        headers:{
-          'Prefer':'return=representation',
-          'Content-Profile':'public'
-        },
-        body:JSON.stringify(payload)
-      });
-
-      const c=Array.isArray(rows)?rows[0]:rows;
-      if(!c || !c.id) throw new Error('Supabase tidak mengembalikan ID komentar.');
-
-      comments.push({
-        id:c.id,
-        username:c.username||username,
-        text:c.content||payload.content,
-        date:c.created_at||new Date().toISOString(),
-        role:'member'
-      });
-      persist();
+      const rows=await api('/comments',{method:'POST',headers:{'Prefer':'return=representation'},body:JSON.stringify({username,content:maskBad(text)})});
+      const c=rows&&rows[0];
+      if(c) comments.push({id:c.id,username:c.username,text:c.content,date:c.created_at,role:"member"});
       $("commentText").value="";
-      renderComments();
-      renderPortalStats();
-      toast("☁️ Komentar tersimpan di Supabase dan dibagikan ke semua pengguna");
-
-      // Read-after-write verifies that the cloud row is actually visible.
-      setTimeout(loadCloudComments,150);
+      renderComments();renderPortalStats();
+      toast("☁️ Komentar tersimpan di Supabase");
     }catch(e){
-      console.error('cloudSubmitComment:',e);
-      const detail=e?.message||String(e);
-      toast("❌ Gagal menyimpan komentar: "+detail);
-    }finally{
-      if(send) send.disabled=false;
+      console.error(e);
+      toast("❌ Komentar gagal disimpan ke Supabase");
     }
   }
 
@@ -2323,7 +2325,6 @@ initTheme();persist();renderTrending();renderNews();renderComments();setupReveal
   $("commentBtn").onclick=cloudSubmitComment;
 
   // Initial cloud hydration after the page has rendered.
-  // no-store prevents an old cached response from hiding new comments.
   setTimeout(()=>{loadCloudNews();loadCloudComments();},150);
 })();
 </script>
